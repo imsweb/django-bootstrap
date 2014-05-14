@@ -1,0 +1,18 @@
+{% load bootstrap %}
+
+{% if form.non_field_errors %}
+{% for e in form.non_field_errors %}
+    <div class="alert alert-danger">
+        <a class="close" data-dismiss="alert"><i class="fa fa-times"></i></a>
+         {{ e }}
+    </div>
+{% endfor %}
+{% endif %}
+
+{% for field in form.hidden_fields %}
+    {{ field }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    {% bootstrap_field field %}
+{% endfor %}
