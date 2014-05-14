@@ -12,6 +12,13 @@ Contents:
    :maxdepth: 2
 
 
+Template Tags
+-------------
+
+
+Widgets
+-------
+
 
 Indices and tables
 ==================
