@@ -3,6 +3,20 @@ from django.template import loader, Context
 from django.forms.utils import flatatt
 
 class TemplateWidget (forms.Widget):
+    """
+    A widget that renders the specified ``template_name`` with the following context
+    (plus any ``extra_context``):
+
+        name
+            The name of the field
+        value
+            The field's current value
+        attrs
+            Flattened HTML attributes, computed from ``self.build_attrs``
+        widget
+            A reference to ``self``
+    """
+
     template_name = None
     extra_context = {}
 
@@ -25,7 +39,14 @@ class TemplateWidget (forms.Widget):
         return template.render(Context(params))
 
 class BootstrapWidget (object):
+    """
+    Base class for most widgets implemented here (with the exception of :class:`TemplateWidget`).
+    """
+
     css_classes = ('form-control',)
+    """
+    A tuple of CSS classes to apply to the rendered widget, in addition to any ``class`` attribute specified.
+    """
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         attrs = dict(self.attrs, **kwargs)
@@ -36,19 +57,20 @@ class BootstrapWidget (object):
         return attrs
 
 class TextInput (BootstrapWidget, forms.TextInput):
-    pass
+    """ Bootstrap version of ``forms.TextInput`` """
 
 class Textarea (BootstrapWidget, forms.Textarea):
-    pass
+    """ Bootstrap version of ``forms.Textarea`` """
 
 class DateInput (BootstrapWidget, forms.DateInput):
+    """ Bootstrap version of ``forms.DateInput``. The input is rendered with an extra "date" class. """
     css_classes = BootstrapWidget.css_classes + ('date',)
 
 class Select (BootstrapWidget, forms.Select):
-    pass
+    """ Bootstrap version of ``forms.Select`` """
 
 class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
-    pass
+    """ Bootstrap version of ``forms.SelectMultiple`` """
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
-    pass
+    """ Bootstrap version of ``forms.NullBooleanSelect`` """
