@@ -48,8 +48,14 @@ class BootstrapWidget (object):
     A tuple of CSS classes to apply to the rendered widget, in addition to any ``class`` attribute specified.
     """
 
+    extra_attrs = {}
+    """
+    Extra input attributes, defined on a class level.
+    """
+
     def build_attrs(self, extra_attrs=None, **kwargs):
         attrs = dict(self.attrs, **kwargs)
+        attrs.update(self.extra_attrs)
         if extra_attrs:
             attrs.update(extra_attrs)
         new_class = '%s %s' % (attrs.get('class', ''), ' '.join(self.css_classes))
@@ -58,6 +64,10 @@ class BootstrapWidget (object):
 
 class TextInput (BootstrapWidget, forms.TextInput):
     """ Bootstrap version of ``forms.TextInput`` """
+
+class AutofocusTextInput (TextInput):
+    """ Autofocusing TextInput widget. """
+    extra_attrs = {'autofocus': 'autofocus'}
 
 class Textarea (BootstrapWidget, forms.Textarea):
     """ Bootstrap version of ``forms.Textarea`` """
