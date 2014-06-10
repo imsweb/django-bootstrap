@@ -23,7 +23,7 @@ def bootstrap_form(form):
     }
 
 @register.inclusion_tag('bootstrap/field.html')
-def bootstrap_field(field):
+def bootstrap_field(field, classes=''):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -37,10 +37,12 @@ def bootstrap_field(field):
     input element instead of before.
 
     :param field: A BoundField instance, such as those returned by iterating over a form
+    :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
     """
     return {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
+        'extra_classes': classes,
     }
 
 @register.inclusion_tag('bootstrap/pager.html')
@@ -74,7 +76,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7):
     }
 
 @register.simple_tag
-def render_value(obj, field_name, template=None):
+def render_value(obj, field_name, template=None, classes=''):
     """
     Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
     as suggested by http://getbootstrap.com/css/#forms-controls-static
@@ -102,4 +104,5 @@ def render_value(obj, field_name, template=None):
         'field': field_name,
         'label': label,
         'value': value,
+        'extra_classes': classes,
     })

@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group {{ extra_classes }}">
     <label>{{ label|capfirst }}</label>
-    <p class="form-control-static">{{ value }}</p>
+    <p class="form-control-static">{{ value|default_if_none:""|linebreaksbr }}</p>
 </div>
