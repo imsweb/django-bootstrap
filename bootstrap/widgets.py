@@ -72,6 +72,10 @@ class AutofocusTextInput (TextInput):
 class Textarea (BootstrapWidget, forms.Textarea):
     """ Bootstrap version of ``forms.Textarea`` """
 
+class AutofocusTextarea (Textarea):
+    """ Autofocusing Textarea widget. """
+    extra_attrs = {'autofocus': 'autofocus'}
+
 class DateInput (BootstrapWidget, forms.DateInput):
     """ Bootstrap version of ``forms.DateInput``. The input is rendered with an extra "date" class. """
     css_classes = BootstrapWidget.css_classes + ('date',)
