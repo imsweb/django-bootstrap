@@ -69,6 +69,13 @@ class AutofocusTextInput (TextInput):
     """ Autofocusing TextInput widget. """
     extra_attrs = {'autofocus': 'autofocus'}
 
+class PasswordInput (BootstrapWidget, forms.PasswordInput):
+    """ Bootstrap version of ``forms.PasswordInput`` """
+
+class AutofocusPasswordInput (PasswordInput):
+    """ Autofocusing PasswordInput widget. """
+    extra_attrs = {'autofocus': 'autofocus'}
+
 class Textarea (BootstrapWidget, forms.Textarea):
     """ Bootstrap version of ``forms.Textarea`` """
 
