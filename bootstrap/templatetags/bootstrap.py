@@ -12,9 +12,12 @@ def bootstrap_form(form, template=None):
     Renders a Django form using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
 
-    The form rendering is controlled by the ``bootstrap/form.html``
+    By default, the form rendering is controlled by the ``bootstrap/form.html``
     template, which renders any non-field errors as error alerts, followed by hidden fields,
     and finally visible fields, each rendered using the ``bootstrap_field`` templatetag.
+
+    This tag will also search for ``bootstrap/<form_class>.html`` first, if it exists. For a
+    form class named RequestForm, ``bootstrap/requestform.html`` will be checked.
 
     :param form: A Django form instance
     """
@@ -35,13 +38,18 @@ def bootstrap_field(field, classes='', template=None):
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
 
-    The field rendering is specified in the ``bootstrap/field.html`` template, which will render
+    By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
     ``form-group`` divs with ``has-error`` and ``required`` classes as appropriate, any field errors
     using Django's field error rendering (typically ``ul.errorlist``), and includes a ``help-block``
     element for help text when no errors are present.
 
     A special check is made for ``CheckboxInput`` widgets, so that the label appears after the
     input element instead of before.
+
+    This tag will also first search for the specified ``template`` (if provided), then for templates named
+    ``bootstrap/<field_class>_<widget_class>.html`` or ``bootstrap/<field_class>.html`` before falling back
+    to ``bootstrap/field.html``. For instance, a CharField with a Textarea widget will first look for
+    ``bootstrap/charfield_textarea.html``, then ``bootstrap/charfield.html``.
 
     :param field: A BoundField instance, such as those returned by iterating over a form
     :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
@@ -66,7 +74,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 
         http://getbootstrap.com/components/#pagination
 
-    The pager's template is ``bootstrap/pager.html``.
+    The pager's template is ``bootstrap/pager.html`` by default, unless ``template`` is specified.
 
     :param total: The total number of results
     :param page_size: The page size
