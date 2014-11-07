@@ -61,10 +61,13 @@ def bootstrap_field(field, classes='', template=None):
     ]
     if template:
         templates.insert(0, template)
+    extra_classes = getattr(field.field, 'css_classes', [])
+    if extra_classes:
+        classes += ' ' + ' '.join(extra_classes)
     return loader.render_to_string(templates, {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
-        'extra_classes': classes,
+        'extra_classes': classes.strip(),
     })
 
 @register.simple_tag

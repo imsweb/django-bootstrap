@@ -1,4 +1,4 @@
-<div class="form-group{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %} {{ extra_classes }}">
+<div class="form-group{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}">
     {% if not is_checkbox %}
     <label for="{{ field.auto_id }}">{{ field.label }}</label>
     {% endif %}
