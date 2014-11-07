@@ -6,8 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 
 register = template.Library()
 
-@register.inclusion_tag('bootstrap/form.html')
-def bootstrap_form(form):
+@register.simple_tag
+def bootstrap_form(form, template=None):
     """
     Renders a Django form using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -18,12 +18,19 @@ def bootstrap_form(form):
 
     :param form: A Django form instance
     """
-    return {
-        'form': form,
-    }
 
-@register.inclusion_tag('bootstrap/field.html')
-def bootstrap_field(field, classes=''):
+    templates = [
+        'bootstrap/%s.html' % form.__class__.__name__.lower(),
+        'bootstrap/form.html',
+    ]
+    if template:
+        templates.insert(0, template)
+    return loader.render_to_string(templates, {
+        'form': form,
+    })
+
+@register.simple_tag
+def bootstrap_field(field, classes='', template=None):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -39,14 +46,21 @@ def bootstrap_field(field, classes=''):
     :param field: A BoundField instance, such as those returned by iterating over a form
     :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
     """
-    return {
+    templates = [
+        'bootstrap/%s_%s.html' % (field.field.__class__.__name__.lower(), field.field.widget.__class__.__name__.lower()),
+        'bootstrap/%s.html' % field.field.__class__.__name__.lower(),
+        'bootstrap/field.html',
+    ]
+    if template:
+        templates.insert(0, template)
+    return loader.render_to_string(templates, {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'extra_classes': classes,
-    }
+    })
 
-@register.inclusion_tag('bootstrap/pager.html')
-def pager(total, page_size=10, page=1, param='page', querystring='', spread=7):
+@register.simple_tag
+def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, template=None):
     """
     Renders a pager using Bootstrap's pagination markup, documented here:
 
@@ -68,15 +82,20 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7):
         page_range = range(start, start + spread)
     else:
         page_range = paginator.page_range
-    return {
+    templates = [
+        'bootstrap/pager.html',
+    ]
+    if template:
+        templates.insert(0, template)
+    return loader.render_to_string(templates, {
         'page_range': page_range,
         'page': page,
         'param': param,
         'querystring': querystring,
-    }
+    })
 
 @register.simple_tag
-def render_value(obj, field_name, template=None, classes=''):
+def render_value(obj, field_name, template=None, classes='', label=None):
     """
     Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
     as suggested by http://getbootstrap.com/css/#forms-controls-static
@@ -98,7 +117,15 @@ def render_value(obj, field_name, template=None, classes=''):
     ]
     if template:
         templates.insert(0, template)
-    label, value = obj.get_field(field_name)
+    try:
+        # XXX: A little hacky having this here - it's defined in bioshare's PropertiesModel.
+        label, value = obj.get_field(field_name)
+    except:
+        if label is None:
+            label = field_name[0].upper() + field_name[1:].replace('_', ' ')
+        value = getattr(obj, field_name, None)
+        if hasattr(value, 'all'):
+            value = list(value.all())
     return loader.render_to_string(templates, {
         'object': obj,
         'field': field_name,
