@@ -67,6 +67,7 @@ def bootstrap_field(field, classes='', template=None):
     return loader.render_to_string(templates, {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
+        'show_label': getattr(field.field.widget, 'show_label', True),
         'extra_classes': classes.strip(),
     })
 

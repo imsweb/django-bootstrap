@@ -95,3 +95,9 @@ class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
+
+class EmailInput (TextInput):
+    input_type = 'email'
+
+class NumberInput (TextInput):
+    input_type = 'number'
