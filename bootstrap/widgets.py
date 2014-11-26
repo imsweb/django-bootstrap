@@ -1,6 +1,7 @@
 from django import forms
 from django.template import loader, Context
 from django.forms.utils import flatatt
+from django.utils.translation import ugettext_lazy
 
 class TemplateWidget (forms.Widget):
     """
@@ -95,6 +96,14 @@ class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
+
+    def __init__(self, attrs=None, unknown_label=None):
+        super(NullBooleanSelect, self).__init__(attrs=attrs)
+        self.choices = (
+            ('1', ugettext_lazy(unknown_label or 'Unknown')),
+            ('2', ugettext_lazy('Yes')),
+            ('3', ugettext_lazy('No'))
+        )
 
 class EmailInput (TextInput):
     input_type = 'email'
