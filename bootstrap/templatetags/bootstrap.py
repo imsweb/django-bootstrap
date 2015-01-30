@@ -3,6 +3,10 @@ from django import forms
 from django.template import loader
 from django.core.paginator import Paginator
 from django.contrib.contenttypes.models import ContentType
+from django.utils import dateformat
+from django.utils.encoding import force_text
+from django.conf import settings
+import datetime
 
 register = template.Library()
 
@@ -107,7 +111,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
     })
 
 @register.simple_tag
-def render_value(obj, field_name, template=None, classes='', label=None):
+def render_value(obj, field_name, template=None, classes='', label=None, default=''):
     """
     Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
     as suggested by http://getbootstrap.com/css/#forms-controls-static
@@ -144,4 +148,26 @@ def render_value(obj, field_name, template=None, classes='', label=None):
         'label': label,
         'value': value,
         'extra_classes': classes,
+        'default_value': default,
     })
+
+@register.simple_tag
+def stringify(value, sep=', ', default='', linebreaks=True):
+    if value is None:
+        value = default
+    elif isinstance(value, (list, tuple)):
+        value = sep.join(stringify(v) for v in value)
+    elif isinstance(value, dict):
+        parts = []
+        for key, value in value.items():
+            if key and value:
+                parts.append('%s: %s' % (key, stringify(value)))
+        value = sep.join(parts)
+    elif isinstance(value, datetime.datetime):
+        value = dateformat.format(value, settings.DATETIME_FORMAT)
+    elif isinstance(value, datetime.date):
+        value = dateformat.format(value, settings.DATE_FORMAT)
+    value = force_text(value)
+    if linebreaks:
+        value = value.replace('\r\n', '\n').replace('\n', '<br />')
+    return value
