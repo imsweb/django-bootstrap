@@ -167,7 +167,8 @@ def stringify(value, sep=', ', default='', linebreaks=True):
         value = dateformat.format(value, settings.DATETIME_FORMAT)
     elif isinstance(value, datetime.date):
         value = dateformat.format(value, settings.DATE_FORMAT)
-    value = force_text(value)
+    # The default value should be used if the string representation is empty, not just the value itself.
+    value = force_text(value) or default
     if linebreaks:
         value = value.replace('\r\n', '\n').replace('\n', '<br />')
     return value
