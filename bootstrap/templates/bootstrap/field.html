@@ -9,10 +9,12 @@
             {{ field }}
         {% endif %}
 
-        {{ field.errors }}
-
-        {% if field.help_text and not field.errors %}
+        {% if field.help_text %}
             <span class="help-block">{{ field.help_text|safe }}</span>
+        {% endif %}
+
+        {% if field.errors %}
+            {{ field.errors }}
         {% endif %}
     </div>
 </div>
