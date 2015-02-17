@@ -1496,6 +1496,7 @@
 		 */
 		onKeyDown: function(e) {
 			var isInput = e.target === this.$control_input[0];
+			var printable = (e.keyCode >= 32 && e.keyCode <= 126);
 			var self = this;
 	
 			if (self.isLocked) {
@@ -1574,7 +1575,7 @@
 			}
 	
 			if ((self.isFull() || self.isInputHidden) && !(IS_MAC ? e.metaKey : e.ctrlKey)) {
-				e.preventDefault();
+				self.settings.mode === 'single' && printable ? self.clear() : e.preventDefault();
 				return;
 			}
 		},
