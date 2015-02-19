@@ -1677,8 +1677,9 @@
 				self.setCaret(self.items.length);
 				self.refreshState();
 	
-				// IE11 bug: element still marked as active
-				(dest || document.body).focus();
+				if (dest) {
+				    dest.focus();
+			    }
 	
 				self.ignoreFocus = false;
 				self.trigger('blur');
