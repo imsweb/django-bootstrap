@@ -1179,7 +1179,7 @@
 			$control_input    = $('<input type="text" autocomplete="off" />').appendTo($control).attr('tabindex', $input.is(':disabled') ? '-1' : self.tabIndex);
 			$dropdown_parent  = $(settings.dropdownParent || $wrapper);
 			$dropdown         = $('<div>').addClass(settings.dropdownClass).addClass(inputMode).hide().appendTo($dropdown_parent);
-			$dropdown_content = $('<div>').addClass(settings.dropdownContentClass).appendTo($dropdown);
+			$dropdown_content = $('<div tabindex="-1">').addClass(settings.dropdownContentClass).appendTo($dropdown);
 	
 			if(self.settings.copyClassesToDropdown) {
 				$dropdown.addClass(classes);
