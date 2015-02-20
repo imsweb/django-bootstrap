@@ -1575,7 +1575,7 @@
 			}
 	
 			if ((self.isFull() || self.isInputHidden) && !(IS_MAC ? e.metaKey : e.ctrlKey)) {
-				self.settings.mode === 'single' && printable ? self.clear() : e.preventDefault();
+				self.settings.mode === 'single' && self.settings.searchOnKeypress && printable ? self.clear() : e.preventDefault();
 				return;
 			}
 		},
@@ -3182,6 +3182,7 @@
 		preload: false,
 		allowEmptyOption: false,
 		closeAfterSelect: false,
+		searchOnKeypress: true,
 	
 		scrollDuration: 60,
 		loadThrottle: 300,
