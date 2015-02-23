@@ -2093,7 +2093,7 @@
 			var query             = $.trim(self.$control_input.val());
 			var results           = self.search(query);
 			var $dropdown_content = self.$dropdown_content;
-			var active_before     = self.$activeOption && hash_key(self.$activeOption.attr('data-value'));
+			var active_before     = self.$activeOption && hash_key(self.$activeOption.attr('data-value')) !== null;
 	
 			// build markup
 			n = results.items.length;
@@ -2238,7 +2238,7 @@
 		 */
 		registerOption: function(data) {
 			var key = hash_key(data[this.settings.valueField]);
-			if (!key || this.options.hasOwnProperty(key)) return false;
+			if (key === null || this.options.hasOwnProperty(key)) return false;
 			data.$order = data.$order || ++this.order;
 			this.options[key] = data;
 			return key;
@@ -2252,7 +2252,7 @@
 		 */
 		registerOptionGroup: function(data) {
 			var key = hash_key(data[this.settings.optgroupValueField]);
-			if (!key) return false;
+			if (key === null) return false;
 	
 			data.$order = data.$order || ++this.order;
 			this.optgroups[key] = data;
@@ -3251,9 +3251,7 @@
 		var field_optgroup       = settings.optgroupField;
 		var field_optgroup_label = settings.optgroupLabelField;
 		var field_optgroup_value = settings.optgroupValueField;
-	
-		var optionsMap = {};
-	
+		
 		/**
 		 * Initializes selectize from a <input type="text"> element.
 		 *
@@ -3293,6 +3291,7 @@
 		var init_select = function($input, settings_element) {
 			var i, n, tagName, $children, order = 0;
 			var options = settings_element.options;
+			var optionsMap = {};
 	
 			var readData = function($el) {
 				var data = attr_data && $el.attr(attr_data);
