@@ -58,6 +58,8 @@ def bootstrap_field(field, classes='', template=None):
     :param field: A BoundField instance, such as those returned by iterating over a form
     :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
     """
+    if not field:
+        return ''
     templates = [
         'bootstrap/%s_%s.html' % (field.field.__class__.__name__.lower(), field.field.widget.__class__.__name__.lower()),
         'bootstrap/%s.html' % field.field.__class__.__name__.lower(),
