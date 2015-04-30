@@ -2,7 +2,6 @@ from django import template
 from django import forms
 from django.template import loader
 from django.core.paginator import Paginator
-from django.contrib.contenttypes.models import ContentType
 from django.utils import dateformat
 from django.utils.encoding import force_text
 from django.conf import settings
@@ -126,6 +125,7 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         * ``<app_label>/value.html``
         * ``bootstrap/value.html``
     """
+    from django.contrib.contenttypes.models import ContentType
     ct = ContentType.objects.get_for_model(obj)
     templates = [
         '%s/values/%s_%s.html' % (ct.app_label, ct.model, field_name),
