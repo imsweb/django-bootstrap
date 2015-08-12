@@ -157,6 +157,8 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
 def stringify(value, sep=', ', default='', linebreaks=True):
     if value is None:
         value = default
+    elif isinstance(value, bool):
+        value = 'Yes' if value else 'No'
     elif isinstance(value, (list, tuple)):
         value = sep.join(stringify(v) for v in value)
     elif isinstance(value, dict):
