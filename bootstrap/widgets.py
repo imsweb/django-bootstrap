@@ -94,6 +94,16 @@ class Select (BootstrapWidget, forms.Select):
 class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
     """ Bootstrap version of ``forms.SelectMultiple`` """
 
+class RadioSelect (BootstrapWidget, forms.RadioSelect):
+    """ Bootstrap version of ``forms.RadioSelect`` """
+    css_classes = []
+    use_legend = True
+
+class CheckboxSelectMultiple (BootstrapWidget, forms.CheckboxSelectMultiple):
+    """ Bootstrap version of ``forms.CheckboxSelectMultiple`` """
+    css_classes = []
+    use_legend = True
+
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
 

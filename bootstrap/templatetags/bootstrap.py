@@ -73,6 +73,7 @@ def bootstrap_field(field, classes='', template=None):
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
+        'use_legend': getattr(field.field.widget, 'use_legend', False),
         'extra_classes': classes.strip(),
     })
 
