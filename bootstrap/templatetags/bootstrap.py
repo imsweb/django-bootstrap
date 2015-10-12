@@ -9,6 +9,19 @@ import datetime
 
 register = template.Library()
 
+# https://fortawesome.github.io/Font-Awesome/icons/#file-type
+FONT_AWESOME_FILE_TYPE_ICON_MAP = {
+    'doc': 'fa-file-word-o',
+    'docx': 'fa-file-word-o',
+    'pdf': 'fa-file-pdf-o',
+    'ppt': 'fa-file-powerpoint-o',
+    'pptx': 'fa-file-powerpoint-o',
+    'txt': 'fa-file-text-o',
+    'xls': 'fa-file-excel-o',
+    'xlsx': 'fa-file-excel-o',
+    'zip': 'fa-file-archive-o',
+}
+
 @register.simple_tag
 def bootstrap_form(form, template=None):
     """
@@ -177,3 +190,9 @@ def stringify(value, sep=', ', default='', linebreaks=True):
     if linebreaks:
         value = value.replace('\r\n', '\n').replace('\n', '<br />')
     return value
+
+@register.filter
+def file_type_icon(file_ext):
+    if file_ext.startswith('.'):
+        file_ext = file_ext[1:]
+    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(file_ext, 'fa-file-o')
