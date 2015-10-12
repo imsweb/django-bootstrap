@@ -192,7 +192,7 @@ def stringify(value, sep=', ', default='', linebreaks=True):
     return value
 
 @register.filter
-def file_type_icon(file_ext):
+def file_type_icon(file_ext, default='fa-file-o'):
     if file_ext.startswith('.'):
         file_ext = file_ext[1:]
-    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(file_ext, 'fa-file-o')
+    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(file_ext, default)
