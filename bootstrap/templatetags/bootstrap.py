@@ -197,12 +197,9 @@ def stringify(value, sep=', ', default='', linebreaks=True):
 
 @register.filter
 def file_extension_icon(ext, default='fa-file-o'):
-    if ext.startswith('.'):
-        ext = ext[1:]
-    ext = ext.lower()
-    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(ext, default)
+    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(ext.lstrip('.').lower(), default)
 
 @register.filter
 def filename_icon(filename, default='fa-file-o'):
-    root, ext = os.path.splitext(filename)
+    _root, ext = os.path.splitext(filename)
     return file_extension_icon(ext, default=default)
