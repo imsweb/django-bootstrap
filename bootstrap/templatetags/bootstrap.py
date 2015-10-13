@@ -6,6 +6,7 @@ from django.utils import dateformat
 from django.utils.encoding import force_text
 from django.conf import settings
 import datetime
+import os
 
 register = template.Library()
 
@@ -14,8 +15,11 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'doc': 'fa-file-word-o',
     'docx': 'fa-file-word-o',
     'pdf': 'fa-file-pdf-o',
+    'pps': 'fa-file-powerpoint-o',
+    'ppsx': 'fa-file-powerpoint-o',
     'ppt': 'fa-file-powerpoint-o',
     'pptx': 'fa-file-powerpoint-o',
+    'rtf': 'fa-file-text-o',
     'txt': 'fa-file-text-o',
     'xls': 'fa-file-excel-o',
     'xlsx': 'fa-file-excel-o',
@@ -192,7 +196,13 @@ def stringify(value, sep=', ', default='', linebreaks=True):
     return value
 
 @register.filter
-def file_type_icon(file_ext, default='fa-file-o'):
-    if file_ext.startswith('.'):
-        file_ext = file_ext[1:]
-    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(file_ext, default)
+def file_extension_icon(ext, default='fa-file-o'):
+    if ext.startswith('.'):
+        ext = ext[1:]
+    ext = ext.lower()
+    return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(ext, default)
+
+@register.filter
+def filename_icon(filename, default='fa-file-o'):
+    root, ext = os.path.splitext(filename)
+    return file_extension_icon(ext, default=default)
