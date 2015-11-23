@@ -120,3 +120,6 @@ class EmailInput (TextInput):
 
 class NumberInput (TextInput):
     input_type = 'number'
+
+class FileInput (BootstrapWidget, forms.FileInput):
+    css_classes = ()
