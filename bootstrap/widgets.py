@@ -115,11 +115,12 @@ class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
             ('3', ugettext_lazy('No'))
         )
 
-class EmailInput (TextInput):
-    input_type = 'email'
+class EmailInput (BootstrapWidget, forms.EmailInput):
+    """ Bootstrap version of ``forms.EmailInput`` """
 
-class NumberInput (TextInput):
-    input_type = 'number'
+class NumberInput (BootstrapWidget, forms.NumberInput):
+    """ Bootstrap version of ``forms.NumberInput`` """
 
 class FileInput (BootstrapWidget, forms.FileInput):
+    """ Bootstrap version of ``forms.FileInput`` """
     css_classes = ()
