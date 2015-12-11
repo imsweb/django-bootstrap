@@ -56,6 +56,8 @@ class BootstrapWidget (object):
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         attrs = dict(self.attrs, **kwargs)
+        if self.is_required:
+            attrs['aria-required'] = 'true'
         attrs.update(self.extra_attrs)
         if extra_attrs:
             attrs.update(extra_attrs)
