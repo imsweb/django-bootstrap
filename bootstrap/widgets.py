@@ -1,7 +1,8 @@
 from django import forms
-from django.template import loader, Context
 from django.forms.utils import flatatt
+from django.template import Context, loader
 from django.utils.translation import ugettext_lazy
+
 
 class TemplateWidget (forms.Widget):
     """
@@ -39,6 +40,7 @@ class TemplateWidget (forms.Widget):
         params.update(self.extra_context)
         return template.render(Context(params))
 
+
 class BootstrapWidget (object):
     """
     Base class for most widgets implemented here (with the exception of :class:`TemplateWidget`).
@@ -65,46 +67,58 @@ class BootstrapWidget (object):
         attrs['class'] = new_class.strip()
         return attrs
 
+
 class TextInput (BootstrapWidget, forms.TextInput):
     """ Bootstrap version of ``forms.TextInput`` """
+
 
 class AutofocusTextInput (TextInput):
     """ Autofocusing TextInput widget. """
     extra_attrs = {'autofocus': 'autofocus'}
 
+
 class PasswordInput (BootstrapWidget, forms.PasswordInput):
     """ Bootstrap version of ``forms.PasswordInput`` """
+
 
 class AutofocusPasswordInput (PasswordInput):
     """ Autofocusing PasswordInput widget. """
     extra_attrs = {'autofocus': 'autofocus'}
 
+
 class Textarea (BootstrapWidget, forms.Textarea):
     """ Bootstrap version of ``forms.Textarea`` """
+
 
 class AutofocusTextarea (Textarea):
     """ Autofocusing Textarea widget. """
     extra_attrs = {'autofocus': 'autofocus'}
 
+
 class DateInput (BootstrapWidget, forms.DateInput):
     """ Bootstrap version of ``forms.DateInput``. The input is rendered with an extra "date" class. """
     css_classes = BootstrapWidget.css_classes + ('date',)
 
+
 class Select (BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
 
+
 class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
     """ Bootstrap version of ``forms.SelectMultiple`` """
+
 
 class RadioSelect (BootstrapWidget, forms.RadioSelect):
     """ Bootstrap version of ``forms.RadioSelect`` """
     css_classes = []
     use_fieldset = True
 
+
 class CheckboxSelectMultiple (BootstrapWidget, forms.CheckboxSelectMultiple):
     """ Bootstrap version of ``forms.CheckboxSelectMultiple`` """
     css_classes = []
     use_fieldset = True
+
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
@@ -117,8 +131,10 @@ class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
             ('3', ugettext_lazy('No'))
         )
 
+
 class EmailInput (TextInput):
     input_type = 'email'
+
 
 class NumberInput (TextInput):
     input_type = 'number'

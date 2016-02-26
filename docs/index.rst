@@ -1,5 +1,5 @@
-Welcome to Bootstrap's documentation!
-=====================================
+ims-bootstrap Documentation
+===========================
 
 This application is a collection of Django templatetags and widgets that help output Bootstrap-ified form markup.
 

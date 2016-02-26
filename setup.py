@@ -1,13 +1,13 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 import bootstrap
 
 setup(
-    name='bootstrap',
+    name='ims-bootstrap',
     version=bootstrap.__version__,
-    description='A set of Django widgets and templatetags for Bootstrap integration.',
+    description='A collection of Django widgets and templatetags for Bootstrap integration.',
     author='Dan Watson',
     author_email='watsond@imsweb.com',
-    url='http://imsweb.com',
+    url='https://github.com/imsweb/django-bootstrap',
     license='BSD',
     packages=find_packages(),
     include_package_data=True,

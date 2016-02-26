@@ -1,10 +1,9 @@
-from django import template
-from django import forms
-from django.template import loader
+from django import forms, template
+from django.conf import settings
 from django.core.paginator import Paginator
+from django.template import loader
 from django.utils import dateformat
 from django.utils.encoding import force_text
-from django.conf import settings
 import datetime
 import os
 
@@ -25,6 +24,7 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'xlsx': 'fa-file-excel-o',
     'zip': 'fa-file-archive-o',
 }
+
 
 @register.simple_tag
 def bootstrap_form(form, template=None):
@@ -51,6 +51,7 @@ def bootstrap_form(form, template=None):
     return loader.render_to_string(templates, {
         'form': form,
     })
+
 
 @register.simple_tag
 def bootstrap_field(field, classes='', template=None):
@@ -94,6 +95,7 @@ def bootstrap_field(field, classes='', template=None):
         'extra_classes': classes.strip(),
     })
 
+
 @register.simple_tag
 def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, template=None):
     """
@@ -128,6 +130,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
         'param': param,
         'querystring': querystring,
     })
+
 
 @register.simple_tag
 def render_value(obj, field_name, template=None, classes='', label=None, default=''):
@@ -171,6 +174,7 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         'default_value': default,
     })
 
+
 @register.simple_tag
 def stringify(value, sep=', ', default='', linebreaks=True):
     if value is None:
@@ -195,9 +199,11 @@ def stringify(value, sep=', ', default='', linebreaks=True):
         value = value.replace('\r\n', '\n').replace('\n', '<br />')
     return value
 
+
 @register.filter
 def file_extension_icon(ext, default='fa-file-o'):
     return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(ext.lstrip('.').lower(), default)
+
 
 @register.filter
 def filename_icon(filename, default='fa-file-o'):
