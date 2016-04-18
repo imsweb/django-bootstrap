@@ -100,6 +100,11 @@ class DateInput (BootstrapWidget, forms.DateInput):
     css_classes = BootstrapWidget.css_classes + ('date',)
 
 
+class TimeInput (BootstrapWidget, forms.TimeInput):
+    """ Bootstrap version of ``forms.TimeInput``. The input is rendered with an extra "time" class. """
+    css_classes = BootstrapWidget.css_classes + ('time',)
+
+
 class Select (BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
 
