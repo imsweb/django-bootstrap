@@ -54,7 +54,7 @@ def bootstrap_form(form, template=None):
 
 
 @register.simple_tag
-def bootstrap_field(field, classes='', template=None):
+def bootstrap_field(field, classes='', template=None, form=None):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -82,6 +82,8 @@ def bootstrap_field(field, classes='', template=None):
         'bootstrap/%s.html' % field.field.__class__.__name__.lower(),
         'bootstrap/field.html',
     ]
+    if form:
+        templates.insert(0, 'bootstrap/%s_%s.html' % (form.__class__.__name__.lower(), field.name))
     if template:
         templates.insert(0, template)
     extra_classes = getattr(field.field, 'css_classes', [])
