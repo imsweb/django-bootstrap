@@ -95,6 +95,7 @@ def bootstrap_field(field, classes='', template=None, form=None):
         'show_label': getattr(field.field.widget, 'show_label', True),
         'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
         'extra_classes': classes.strip(),
+        'form': form,
     })
 
 
