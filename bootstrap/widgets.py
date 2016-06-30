@@ -143,3 +143,72 @@ class EmailInput (TextInput):
 
 class NumberInput (TextInput):
     input_type = 'number'
+
+def optional_kwarg_decorator(fn):
+    """
+        Decorator for decorators that will enable optional kwargs
+    """
+
+    def wrapped_decorator(*args, **kwargs):
+        if len(args) == 1 and len(kwargs) == 0:
+            return fn(args[0], **kwargs)
+        else:
+            def real_decorator(decoratee):
+                return fn(decoratee, **kwargs)
+
+            return real_decorator
+
+    return wrapped_decorator
+
+@optional_kwarg_decorator
+def bootstrap_form(klass, exclude=set(), exclude_predeclared_widgets=True):
+    """
+        Django Form class decorator to automatically attempt to convert each form field widget to bootstrap version of widget.
+    """
+
+    old_init = klass.__init__
+
+    def new_init(self, *args, **kwargs):
+        old_init(self, *args, **kwargs)
+        auto_bootstrap_form_widgets(self, exclude=exclude, exclude_predeclared_widgets=exclude_predeclared_widgets)
+    klass.__init__ = new_init
+    return klass
+
+def auto_bootstrap_form_widgets(form, exclude=set(), exclude_predeclared_widgets=True):
+    """
+        Attempts to convert any auto-created default django widgets to their corresponding bootstrap widget version
+        By default any widgets declared explicitly via form meta's widgets dict will be excluded from conversion.
+    """
+    if exclude_predeclared_widgets and form._meta.widgets:
+        exclude.update(form._meta.widgets.keys())
+    for field_name, field in form.fields.items():
+        if field_name not in exclude:
+            auto_bootstrap_field_widget(field)
+
+def auto_bootstrap_field_widget(field):
+    """
+        Attempts to convert django widget for field to its corresponding bootstrap widget version.
+        If the field cannot be converted, the original widget is kept.
+    """
+    translation_map = {
+       forms.TextInput: TextInput,
+       forms.PasswordInput: PasswordInput,
+       forms.Textarea: Textarea,
+       forms.DateInput: DateInput,
+       forms.TimeInput: TimeInput,
+       forms.Select: Select,
+       forms.SelectMultiple: SelectMultiple,
+       forms.RadioSelect: RadioSelect,
+       forms.CheckboxSelectMultiple: CheckboxSelectMultiple,
+       forms.NullBooleanSelect: NullBooleanSelect,
+       forms.EmailInput: EmailInput,
+       forms.NumberInput: NumberInput,
+    }
+    widget_class = type(field.widget)
+    if widget_class in translation_map:
+        choices = getattr(field.widget, 'choices', None)
+        field.widget = translation_map.get(widget_class)()
+        # need to copy over choices since django pre-caches choices into widget when building form field
+        if choices:
+            field.widget.choices = choices
+
