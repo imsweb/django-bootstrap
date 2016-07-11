@@ -206,9 +206,10 @@ def auto_bootstrap_field_widget(field):
     }
     widget_class = type(field.widget)
     if widget_class in translation_map:
+        has_choices = hasattr(field.widget, 'choices')
         choices = getattr(field.widget, 'choices', None)
         field.widget = translation_map.get(widget_class)()
         # need to copy over choices since django pre-caches choices into widget when building form field
-        if choices:
+        if has_choices:
             field.widget.choices = choices
 
