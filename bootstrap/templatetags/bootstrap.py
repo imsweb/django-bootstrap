@@ -77,9 +77,11 @@ def bootstrap_field(field, classes='', template=None, form=None):
     """
     if not field:
         return ''
+    field_class = field.field.__class__.__name__.lower()
+    widget_class = field.field.widget.__class__.__name__.lower()
     templates = [
-        'bootstrap/%s_%s.html' % (field.field.__class__.__name__.lower(), field.field.widget.__class__.__name__.lower()),
-        'bootstrap/%s.html' % field.field.__class__.__name__.lower(),
+        'bootstrap/%s_%s.html' % (field_class, widget_class),
+        'bootstrap/%s.html' % field_class,
         'bootstrap/field.html',
     ]
     if form:
@@ -94,6 +96,8 @@ def bootstrap_field(field, classes='', template=None, form=None):
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
         'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
+        'field_class': field_class,
+        'widget_class': widget_class,
         'extra_classes': classes.strip(),
         'form': form,
     })

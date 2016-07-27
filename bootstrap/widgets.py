@@ -137,6 +137,41 @@ class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
         )
 
 
+class NullBooleanRadioSelect (RadioSelect):
+    """ A ``RadioSelect`` widget for ``NullBooleanField`` """
+
+    def __init__(self, attrs=None, unknown_label=None):
+        super(NullBooleanRadioSelect, self).__init__(attrs=attrs)
+        self.choices = (
+            ('1', ugettext_lazy(unknown_label or 'Unknown')),
+            ('2', ugettext_lazy('Yes')),
+            ('3', ugettext_lazy('No'))
+        )
+
+    def render(self, name, value, attrs=None, choices=()):
+        try:
+            value = {
+                True: '2',
+                False: '3',
+                '2': '2',
+                '3': '3'
+            }[value]
+        except KeyError:
+            value = '1'
+        return super(NullBooleanRadioSelect, self).render(name, value, attrs, choices)
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name)
+        return {
+            '2': True,
+            True: True,
+            'True': True,
+            '3': False,
+            'False': False,
+            False: False
+        }.get(value)
+
+
 class EmailInput (TextInput):
     input_type = 'email'
 
