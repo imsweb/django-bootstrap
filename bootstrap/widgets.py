@@ -158,7 +158,7 @@ class NullBooleanRadioSelect (RadioSelect):
             }[value]
         except KeyError:
             value = '1'
-        return super(NullBooleanRadioSelect, self).render(name, value, attrs, choices)
+        return super(NullBooleanRadioSelect, self).render(name, value, attrs)
 
     def value_from_datadict(self, data, files, name):
         value = data.get(name)
