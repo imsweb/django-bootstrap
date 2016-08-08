@@ -148,7 +148,7 @@ class NullBooleanRadioSelect (RadioSelect):
             ('3', ugettext_lazy('No'))
         )
 
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None):
         try:
             value = {
                 True: '2',
