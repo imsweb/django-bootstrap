@@ -3,6 +3,8 @@ from django.forms.utils import flatatt
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy
 
+import collections
+
 
 class TemplateWidget (forms.Widget):
     """
@@ -178,3 +180,46 @@ class EmailInput (TextInput):
 
 class NumberInput (TextInput):
     input_type = 'number'
+
+
+class ModelWidgets (collections.Mapping):
+
+    widget_map = {
+       forms.TextInput: TextInput,
+       forms.PasswordInput: PasswordInput,
+       forms.Textarea: Textarea,
+       forms.DateInput: DateInput,
+       forms.TimeInput: TimeInput,
+       forms.Select: Select,
+       forms.SelectMultiple: SelectMultiple,
+       forms.RadioSelect: RadioSelect,
+       forms.CheckboxSelectMultiple: CheckboxSelectMultiple,
+       forms.NullBooleanSelect: NullBooleanSelect,
+       forms.EmailInput: EmailInput,
+       forms.NumberInput: NumberInput,
+    }
+
+    def __init__(self, model_class, overrides=None):
+        self.model_class = model_class
+        self.overrides = overrides or {}
+
+    def __getitem__(self, key):
+        if key in self.overrides:
+            return self.overrides[key]
+        field = self.model_class._meta.get_field(key)
+        original_widget = field.formfield().widget
+        return self.widget_map.get(original_widget.__class__, original_widget)
+
+    def __iter__(self):
+        seen = set()
+        for key in overrides:
+            seen.add(key)
+            yield key
+        for field in self.model_class._meta.fields:
+            if field.name not in seen:
+                yield field.name
+
+    def __len__(self):
+        key_set = set(self.overrides.keys())
+        key_set.update(f.name for f in self.model_class._meta.fields)
+        return len(key_set)

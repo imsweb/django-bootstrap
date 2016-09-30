@@ -4,7 +4,7 @@
     {% endif %}
     <div class="controls clearfix">
         {% if is_checkbox %}
-            <div class="checkbox"><label>{{ field }} {{ field.label }}</label></div>
+            <label class="checkbox-inline">{{ field }} {{ field.label }}</label>
         {% else %}
             {{ field }}
         {% endif %}

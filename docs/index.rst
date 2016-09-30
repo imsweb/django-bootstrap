@@ -23,6 +23,15 @@ Defining a Django form using Bootstrap widgets::
                 'studies': widgets.SelectMultiple,
             }
 
+Alternatively, you can use the `ModelWidgets` helper to automatically create default bootstrap widgets for a form::
+
+    class RequestForm (forms.ModelForm):
+        class Meta:
+            model = Request
+            widgets = widgets.ModelWidgets(Request, {
+                'abstract': widgets.TemplateWidget('abstract.html'), # Custom widget override
+            })
+
 Rendering a form::
 
     {% load bootstrap %}
