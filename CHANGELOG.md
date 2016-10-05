@@ -9,3 +9,7 @@
 ## 1.3.1
 
 * Added a standalone `glyphicons.css` file for optionally loading glyphicons (not loaded by default)
+
+## 1.3.2
+
+* Added a `DateTimeInput` widget

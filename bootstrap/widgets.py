@@ -107,6 +107,11 @@ class TimeInput (BootstrapWidget, forms.TimeInput):
     css_classes = BootstrapWidget.css_classes + ('time',)
 
 
+class DateTimeInput (BootstrapWidget, forms.DateTimeInput):
+    """ Bootstrap version of ``forms.TimeInput``. The input is rendered with an extra "time" class. """
+    css_classes = BootstrapWidget.css_classes + ('datetime',)
+
+
 class Select (BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
 
@@ -190,6 +195,7 @@ class ModelWidgets (collections.Mapping):
        forms.Textarea: Textarea,
        forms.DateInput: DateInput,
        forms.TimeInput: TimeInput,
+       forms.DateTimeInput: DateTimeInput,
        forms.Select: Select,
        forms.SelectMultiple: SelectMultiple,
        forms.RadioSelect: RadioSelect,
