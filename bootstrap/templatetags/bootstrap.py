@@ -54,7 +54,7 @@ def bootstrap_form(form, template=None):
 
 
 @register.simple_tag
-def bootstrap_field(field, classes='', template=None, form=None):
+def bootstrap_field(field, classes='', template=None, form=None, **kwargs):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -79,6 +79,14 @@ def bootstrap_field(field, classes='', template=None, form=None):
         return ''
     field_class = field.field.__class__.__name__.lower()
     widget_class = field.field.widget.__class__.__name__.lower()
+    
+    # 508 compliance to "link" the field with all text associated with it
+    aria_defined_by = kwargs.get('aria_defined_by', None)
+    if not aria_defined_by:
+        aria_defined_by = field.auto_id + "-help-text " if field.help_text else ''
+        aria_defined_by = aria_defined_by + field.auto_id + "-errors" if field.errors else aria_defined_by
+        field.field.widget.attrs['aria-describedby'] = aria_defined_by
+        
     templates = [
         'bootstrap/%s_%s.html' % (field_class, widget_class),
         'bootstrap/%s.html' % field_class,
