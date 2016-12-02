@@ -10,9 +10,13 @@
         {% endif %}
     </div>
     {% if field.help_text %}
-        <span class="help-block">{{ field.help_text|safe }}</span>
+        <span id="{{ field.auto_id }}-help-text" class="help-block">{{ field.help_text|safe }}</span>
     {% endif %}
     {% if field.errors %}
-        {{ field.errors }}
+        <ul id="{{ field.auto_id }}-errors" class="errorlist">
+            {% for error in field.errors %}
+                <li>{{ error|escape }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 </div>
