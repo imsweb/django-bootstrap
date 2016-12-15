@@ -13,3 +13,7 @@
 ## 1.3.2
 
 * Added a `DateTimeInput` widget
+
+## 1.3.3
+
+* Added `aria-describedby` attribute to fields with help text or errors

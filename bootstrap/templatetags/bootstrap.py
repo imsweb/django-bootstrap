@@ -91,6 +91,14 @@ def bootstrap_field(field, classes='', template=None, form=None):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
+    # Need to shoehorn some ARIA attributes onto the widget based on information on the field.
+    describedby = []
+    if field.help_text:
+        describedby.append('%s-help' % field.auto_id)
+    if field.errors:
+        describedby.append('%s-errors' % field.auto_id)
+    if describedby:
+        field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
     return loader.render_to_string(templates, {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
