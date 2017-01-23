@@ -17,3 +17,8 @@
 ## 1.3.3
 
 * Added `aria-describedby` attribute to fields with help text or errors
+
+## 1.3.4
+
+* Respect pre-existing `aria-describedby` set on widgets
+* Add an `id` to each `form-group`
