@@ -22,3 +22,7 @@
 
 * Respect pre-existing `aria-describedby` set on widgets
 * Add an `id` to each `form-group`
+
+## 1.3.5
+
+* Handle fields without a `formfield` in `widgets.ModelWidgets`

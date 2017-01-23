@@ -212,9 +212,11 @@ class ModelWidgets (collections.Mapping):
     def __getitem__(self, key):
         if key in self.overrides:
             return self.overrides[key]
-        field = self.model_class._meta.get_field(key)
-        original_widget = field.formfield().widget
-        return self.widget_map.get(original_widget.__class__, original_widget)
+        try:
+            original_widget = self.model_class._meta.get_field(key).formfield().widget
+            return self.widget_map.get(original_widget.__class__, original_widget)
+        except AttributeError:
+            return None
 
     def __iter__(self):
         seen = set()
@@ -222,10 +224,10 @@ class ModelWidgets (collections.Mapping):
             seen.add(key)
             yield key
         for field in self.model_class._meta.fields:
-            if field.name not in seen:
+            if field.name not in seen and field.formfield():
                 yield field.name
 
     def __len__(self):
         key_set = set(self.overrides.keys())
-        key_set.update(f.name for f in self.model_class._meta.fields)
+        key_set.update(f.name for f in self.model_class._meta.fields if f.formfield())
         return len(key_set)
