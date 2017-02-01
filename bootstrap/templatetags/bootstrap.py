@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.template import loader
 from django.utils import dateformat
 from django.utils.encoding import force_text
+from django.utils.translation import ugettext_lazy as _
 import datetime
 import os
 
@@ -27,7 +28,7 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
 
 
 @register.simple_tag
-def bootstrap_form(form, template=None):
+def bootstrap_form(form, template=None, **kwargs):
     """
     Renders a Django form using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -41,20 +42,19 @@ def bootstrap_form(form, template=None):
 
     :param form: A Django form instance
     """
-
     templates = [
         'bootstrap/%s.html' % form.__class__.__name__.lower(),
         'bootstrap/form.html',
     ]
     if template:
         templates.insert(0, template)
-    return loader.render_to_string(templates, {
-        'form': form,
-    })
+    params = {'form': form}
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
 
 
 @register.simple_tag
-def bootstrap_field(field, classes='', template=None, form=None):
+def bootstrap_field(field, classes='', template=None, **kwargs):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -80,12 +80,11 @@ def bootstrap_field(field, classes='', template=None, form=None):
     field_class = field.field.__class__.__name__.lower()
     widget_class = field.field.widget.__class__.__name__.lower()
     templates = [
+        'bootstrap/%s_%s.html' % (field.form.__class__.__name__.lower(), field.name),
         'bootstrap/%s_%s.html' % (field_class, widget_class),
         'bootstrap/%s.html' % field_class,
         'bootstrap/field.html',
     ]
-    if form:
-        templates.insert(0, 'bootstrap/%s_%s.html' % (form.__class__.__name__.lower(), field.name))
     if template:
         templates.insert(0, template)
     extra_classes = getattr(field.field, 'css_classes', [])
@@ -99,7 +98,7 @@ def bootstrap_field(field, classes='', template=None, form=None):
         describedby.add('%s-errors' % field.auto_id)
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
-    return loader.render_to_string(templates, {
+    params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
@@ -107,8 +106,39 @@ def bootstrap_field(field, classes='', template=None, form=None):
         'field_class': field_class,
         'widget_class': widget_class,
         'extra_classes': classes.strip(),
-        'form': form,
-    })
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
+
+
+@register.simple_tag
+def render_readonly(field, template=None, **kwargs):
+    if not field:
+        return ''
+    field_class = field.field.__class__.__name__.lower()
+    widget_class = field.field.widget.__class__.__name__.lower()
+    templates = [
+        'bootstrap/%s_%s_readonly.html' % (field.form.__class__.__name__.lower(), field.name),
+        'bootstrap/%s_%s_readonly.html' % (field_class, widget_class),
+        'bootstrap/%s_readonly.html' % field_class,
+        'bootstrap/field_readonly.html',
+    ]
+    if template:
+        templates.insert(0, template)
+    value = field.field.to_python(field.value())
+    if hasattr(field.field.widget, 'render_readonly'):
+        rendered = field.field.widget.render_readonly(value)
+    else:
+        rendered = stringify(value)
+    params = {
+        'field': field,
+        'value': value,
+        'rendered_value': rendered,
+        'field_class': field_class,
+        'widget_class': widget_class,
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
 
 
 @register.simple_tag
@@ -148,7 +178,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 
 
 @register.simple_tag
-def render_value(obj, field_name, template=None, classes='', label=None, default=''):
+def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
     Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
     as suggested by http://getbootstrap.com/css/#forms-controls-static
@@ -180,14 +210,16 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         value = getattr(obj, field_name, None)
         if hasattr(value, 'all'):
             value = list(value.all())
-    return loader.render_to_string(templates, {
+    params = {
         'object': obj,
         'field': field_name,
         'label': label,
         'value': value,
         'extra_classes': classes,
         'default_value': default,
-    })
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
 
 
 @register.simple_tag
@@ -195,7 +227,7 @@ def stringify(value, sep=', ', default='', linebreaks=True):
     if value is None:
         value = default
     elif isinstance(value, bool):
-        value = 'Yes' if value else 'No'
+        value = _('Yes') if value else _('No')
     elif isinstance(value, (list, tuple)):
         value = sep.join(stringify(v) for v in value)
     elif isinstance(value, dict):

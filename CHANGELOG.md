@@ -26,3 +26,8 @@
 ## 1.3.5
 
 * Handle fields without a `formfield` in `widgets.ModelWidgets`
+
+## 1.3.6
+
+* Pass kwargs from `bootstrap_form`, `bootstrap_field`, and `render_value` through to the template
+* Added a `render_readonly` templatetag for form fields; checks for `render_readonly` method on widgets
