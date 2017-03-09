@@ -31,3 +31,7 @@
 
 * Pass kwargs from `bootstrap_form`, `bootstrap_field`, and `render_value` through to the template
 * Added a `render_readonly` templatetag for form fields; checks for `render_readonly` method on widgets
+
+## 1.3.7
+
+* Make sure hidden fields do not render a label, and do not render at all in render_readonly

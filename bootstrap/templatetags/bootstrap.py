@@ -113,7 +113,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
 
 @register.simple_tag
 def render_readonly(field, template=None, **kwargs):
-    if not field:
+    if not field or field.is_hidden:
         return ''
     field_class = field.field.__class__.__name__.lower()
     widget_class = field.field.widget.__class__.__name__.lower()
