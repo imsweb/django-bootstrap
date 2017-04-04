@@ -35,3 +35,7 @@
 ## 1.3.7
 
 * Make sure hidden fields do not render a label, and do not render at all in render_readonly
+
+## 1.3.8
+
+* Django 1.11 compatibility

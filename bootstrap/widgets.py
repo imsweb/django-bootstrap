@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.utils import flatatt
-from django.template import Context, loader
+from django.template import loader
 from django.utils.translation import ugettext_lazy
 
 import collections
@@ -16,7 +16,7 @@ class TemplateWidget (forms.Widget):
         value
             The field's current value
         attrs
-            Flattened HTML attributes, computed from ``self.build_attrs``
+            Flattened HTML attributes
         widget
             A reference to ``self``
     """
@@ -32,15 +32,18 @@ class TemplateWidget (forms.Widget):
 
     def render(self, name, value, attrs=None):
         template = loader.get_template(self.template_name)
-        input_attrs = flatatt(self.build_attrs(attrs, name=name))
+        # Don't use build_attrs, since the signature changed between 1.10 and 1.11.
+        final_attrs = dict(self.attrs, name=name)
+        if attrs:
+            final_attrs.update(attrs)
         params = {
             'name': name,
             'value': value,
-            'attrs': input_attrs,
+            'attrs': flatatt(final_attrs),
             'widget': self,
         }
         params.update(self.extra_context)
-        return template.render(Context(params))
+        return template.render(params)
 
 
 class BootstrapWidget (object):
@@ -58,13 +61,11 @@ class BootstrapWidget (object):
     Extra input attributes, defined on a class level.
     """
 
-    def build_attrs(self, extra_attrs=None, **kwargs):
-        attrs = dict(self.attrs, **kwargs)
+    def build_attrs(self, *args, **kwargs):
+        attrs = super(BootstrapWidget, self).build_attrs(*args, **kwargs)
         if self.is_required:
-            attrs['aria-required'] = 'true'
+            attrs.update({'aria-required': 'true'})
         attrs.update(self.extra_attrs)
-        if extra_attrs:
-            attrs.update(extra_attrs)
         new_class = '%s %s' % (attrs.get('class', ''), ' '.join(self.css_classes))
         attrs['class'] = new_class.strip()
         return attrs
