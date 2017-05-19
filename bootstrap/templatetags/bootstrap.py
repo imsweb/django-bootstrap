@@ -90,7 +90,12 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-    # Need to shoehorn some ARIA attributes onto the widget based on information on the field.
+    # Need to shoehorn some ARIA attributes onto the widget based on information on the field
+    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
+    if widget_class == 'radioselect':
+        labelledby.add('%s-radiogroup' % field.auto_id)
+    if labelledby:
+        field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
@@ -101,6 +106,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
+        'is_radioselect': isinstance(field.field.widget, forms.RadioSelect),
         'show_label': getattr(field.field.widget, 'show_label', True),
         'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
         'field_class': field_class,
