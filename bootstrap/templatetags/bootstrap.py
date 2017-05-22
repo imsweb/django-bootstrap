@@ -4,6 +4,9 @@ from django.core.paginator import Paginator
 from django.template import loader
 from django.utils import dateformat
 from django.utils.encoding import force_text
+from django.utils import formats
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 import datetime
 import os
@@ -129,7 +132,8 @@ def render_readonly(field, template=None, **kwargs):
     if hasattr(field.field.widget, 'render_readonly'):
         rendered = field.field.widget.render_readonly(value)
     else:
-        rendered = stringify(value)
+        short_dates = kwargs.pop('short_dates', True)
+        rendered = stringify(value, short_dates=short_dates)
     params = {
         'field': field,
         'value': value,
@@ -223,7 +227,7 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
 
 
 @register.simple_tag
-def stringify(value, sep=', ', default='', linebreaks=True):
+def stringify(value, sep=', ', default='', linebreaks=True, escape_html=True, short_dates=False):
     if value is None:
         value = default
     elif isinstance(value, bool):
@@ -237,14 +241,16 @@ def stringify(value, sep=', ', default='', linebreaks=True):
                 parts.append('%s: %s' % (key, stringify(value)))
         value = sep.join(parts)
     elif isinstance(value, datetime.datetime):
-        value = dateformat.format(value, settings.DATETIME_FORMAT)
+        value = formats.date_format(value, 'SHORT_DATETIME_FORMAT' if short_dates else 'DATETIME_FORMAT')
     elif isinstance(value, datetime.date):
-        value = dateformat.format(value, settings.DATE_FORMAT)
+        value = formats.date_format(value, 'SHORT_DATE_FORMAT' if short_dates else 'DATE_FORMAT')
     # The default value should be used if the string representation is empty, not just the value itself.
     value = force_text(value) or default
+    if escape_html:
+        value = escape(value)
     if linebreaks:
         value = value.replace('\r\n', '\n').replace('\n', '<br />')
-    return value
+    return mark_safe(value)
 
 
 @register.filter

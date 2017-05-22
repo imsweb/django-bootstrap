@@ -39,3 +39,8 @@
 ## 1.3.8
 
 * Django 1.11 compatibility
+
+## 1.3.9
+
+* Use `formats.date_format` in `stringify` to respect `USE_L10N`
+* Escape HTML in `stringify` by default
