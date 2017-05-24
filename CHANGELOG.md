@@ -44,3 +44,7 @@
 
 * Use `formats.date_format` in `stringify` to respect `USE_L10N`
 * Escape HTML in `stringify` by default
+
+## 1.3.10
+
+* Bundled a copy of the latest jQuery for convenience
