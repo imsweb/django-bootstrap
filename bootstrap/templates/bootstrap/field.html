@@ -2,14 +2,12 @@
     {{ field }}
 {% else %}
     <div id="{{ field.auto_id }}-group" class="form-group field-{{ field_class }} widget-{{ widget_class }}{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}">
-        {% if show_label and not is_checkbox and not is_radioselect%}
-        <label for="{{ field.auto_id }}">{{ field.label }}</label>
-        {% elif is_radioselect %}
-        <label for="{{ field.auto_id }}" id="{{ field.auto_id }}-radiogroup">{{ field.label }}</label>
+        {% if show_label and not is_checkbox %}
+        <label for="{{ field.auto_id }}" id="{{ field.auto_id }}-label">{{ field.label }}</label>
         {% endif %}
         <div class="controls clearfix">
             {% if is_checkbox %}
-                <label class="checkbox-inline">{{ field }} {{ field.label }}</label>
+                <label class="checkbox-inline" id="{{ field.auto_id }}-label">{{ field }} {{ field.label }}</label>
             {% else %}
                 {{ field }}
             {% endif %}
