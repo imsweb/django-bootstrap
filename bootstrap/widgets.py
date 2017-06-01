@@ -65,7 +65,7 @@ class BootstrapWidget (object):
         attrs = super(BootstrapWidget, self).build_attrs(*args, **kwargs)
         if self.is_required and not isinstance(self, RadioSelect):
             attrs.update({'aria-required': 'true'})
-        if isinstance(self, RadioSelect):
+        if self.is_required and isinstance(self, RadioSelect):
             attrs.update({'required': 'required'})
         attrs.update(self.extra_attrs)
         new_class = '%s %s' % (attrs.get('class', ''), ' '.join(self.css_classes))
