@@ -48,3 +48,7 @@
 ## 1.3.10
 
 * Bundled a copy of the latest jQuery for convenience
+
+## 1.3.11
+
+* Added a `django/forms/widgets/attrs.html` override to add `form-control` to Django widgets automatically
