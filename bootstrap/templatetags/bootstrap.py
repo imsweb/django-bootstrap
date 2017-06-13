@@ -93,7 +93,10 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-    # Need to shoehorn some ARIA attributes onto the widget based on information on the field.
+    # Need to shoehorn some ARIA attributes onto the widget based on information on the field
+    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
+    labelledby.add('%s-label' % field.auto_id)
+    field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
