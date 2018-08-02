@@ -30,7 +30,7 @@ class TemplateWidget (forms.Widget):
         self.extra_context.update(extra_context)
         super(TemplateWidget, self).__init__(attrs=attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         template = loader.get_template(self.template_name)
         # Don't use build_attrs, since the signature changed between 1.10 and 1.11.
         final_attrs = dict(self.attrs, name=name)
@@ -158,7 +158,7 @@ class NullBooleanRadioSelect (RadioSelect):
             ('3', ugettext_lazy('No'))
         )
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         try:
             value = {
                 True: '2',
@@ -168,7 +168,7 @@ class NullBooleanRadioSelect (RadioSelect):
             }[value]
         except KeyError:
             value = '1'
-        return super(NullBooleanRadioSelect, self).render(name, value, attrs)
+        return super(NullBooleanRadioSelect, self).render(name, value, attrs, renderer=renderer)
 
     def value_from_datadict(self, data, files, name):
         value = data.get(name)
