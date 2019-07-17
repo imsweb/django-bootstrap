@@ -13,7 +13,7 @@
             {% endif %}
         </div>
         {% if field.help_text %}
-            <span id="{{ field.auto_id }}-help" class="help-block">{{ field.help_text|safe }}</span>
+            <span id="{{ field.auto_id }}-help" class="form-text text-muted">{{ field.help_text|safe }}</span>
         {% endif %}
         {% if field.errors %}
             <ul id="{{ field.auto_id }}-errors" class="errorlist">

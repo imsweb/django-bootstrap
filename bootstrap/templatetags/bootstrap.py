@@ -64,8 +64,8 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
 
     By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
     ``form-group`` divs with ``has-error`` and ``required`` classes as appropriate, any field errors
-    using Django's field error rendering (typically ``ul.errorlist``), and includes a ``help-block``
-    element for help text when no errors are present.
+    using Django's field error rendering (typically ``ul.errorlist``), and includes a
+    ``form-text text-muted`` element for help text when no errors are present.
 
     A special check is made for ``CheckboxInput`` widgets, so that the label appears after the
     input element instead of before.
@@ -187,8 +187,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 @register.simple_tag
 def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
-    Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
-    as suggested by http://getbootstrap.com/css/#forms-controls-static
+    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.form-group``.
 
     The template used to render the value depends on the ContentType of the object. The following
     templates are searched in order:
