@@ -57,6 +57,9 @@
 
 * Updated local copy of Bootstrap to v4.3.1
 * Updated Datepicker for Bootstrap to v1.9.0 for Bootstrap 4 support
-* Updated `bootstrap/field.html` and `bootstrap/field_readonly.html` to respect new Bootstrap 4 structure for checkboxes and radios
+* Updated `bootstrap/field.html` to respect new Bootstrap 4 structure for checkboxes and radios
+* Moved closing tag of `.controls.clearfix` div in `field.html` to include the errorlist so `.invalid-feedback` reacts and displays properly
 * Added `widgets.CheckboxInput` which includes the proper Bootstrap 4 class
 * Added `.invalid-feedback` Bootstrap 4 class to field errorlists
+* Changed help-text span tags to small tags, to reflect Bootstrap 4 styles
+* Updated references to Bootstrap's documentation

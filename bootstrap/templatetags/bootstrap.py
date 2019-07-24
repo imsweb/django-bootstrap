@@ -154,7 +154,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
     """
     Renders a pager using Bootstrap's pagination markup, documented here:
 
-        http://getbootstrap.com/components/#pagination
+        https://getbootstrap.com/docs/4.3/components/pagination/
 
     The pager's template is ``bootstrap/pager.html`` by default, unless ``template`` is specified.
 
