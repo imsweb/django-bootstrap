@@ -33,7 +33,7 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
     """
-    Renders a Django form using Bootstrap markup. See http://getbootstrap.com/css/#forms
+    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/4.3/components/forms/
     for more information.
 
     By default, the form rendering is controlled by the ``bootstrap/form.html``
@@ -63,9 +63,9 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     for more information.
 
     By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
-    ``form-group`` divs with ``has-error`` and ``required`` classes as appropriate, any field errors
-    using Django's field error rendering (typically ``ul.errorlist``), and includes a
-    ``form-text text-muted`` element for help text when no errors are present.
+    ``form-group`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
+    using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 4's
+    ``invalid-feedback`` class, and includes a ``form-text text-muted`` element for help text.
 
     A special check is made for ``CheckboxInput`` widgets, so that the label appears after the
     input element instead of before.
@@ -101,6 +101,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
     if field.errors:
+        field.field.widget.attrs['class'] = field.field.widget.attrs.get('class', '') + ' is-invalid'
         describedby.add('%s-errors' % field.auto_id)
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)

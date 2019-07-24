@@ -125,13 +125,18 @@ class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
 
 class RadioSelect (BootstrapWidget, forms.RadioSelect):
     """ Bootstrap version of ``forms.RadioSelect`` """
-    css_classes = []
+    css_classes = ['form-check-input']
     use_fieldset = True
+
+
+class CheckboxInput (BootstrapWidget, forms.CheckboxInput):
+    """ Bootstrap version of ``forms.CheckboxInput`` """
+    css_classes = ['form-check-input']
 
 
 class CheckboxSelectMultiple (BootstrapWidget, forms.CheckboxSelectMultiple):
     """ Bootstrap version of ``forms.CheckboxSelectMultiple`` """
-    css_classes = []
+    css_classes = ['form-check-input']
     use_fieldset = True
 
 
@@ -205,6 +210,7 @@ class ModelWidgets (collections.Mapping):
        forms.Select: Select,
        forms.SelectMultiple: SelectMultiple,
        forms.RadioSelect: RadioSelect,
+       forms.CheckboxInput: CheckboxInput,
        forms.CheckboxSelectMultiple: CheckboxSelectMultiple,
        forms.NullBooleanSelect: NullBooleanSelect,
        forms.EmailInput: EmailInput,
