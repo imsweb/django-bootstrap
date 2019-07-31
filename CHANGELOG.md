@@ -63,3 +63,6 @@
 * Added `.invalid-feedback` Bootstrap 4 class to field errorlists
 * Changed help-text span tags to small tags, to reflect Bootstrap 4 styles
 * Updated references to Bootstrap's documentation
+* Added `.page-item` and `.page-link` classes in `pager.html` where appropriate
+* Restructured the `non_field_errors` alerts in `form.html` to be more Bootstrap 4 like, with a fade transition and using &times; instead of an icon font
+* Gave select widgets the `custom-select` class so they style cleanly when invalid
