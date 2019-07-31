@@ -2,9 +2,11 @@
 
 {% if form.non_field_errors %}
     {% for e in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <a class="close" data-dismiss="alert"><span class="fa fa-times" aria-hidden="true"></span><span class="sr-only">Close</span></a>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ e }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     {% endfor %}
 {% endif %}

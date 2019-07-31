@@ -117,10 +117,12 @@ class DateTimeInput (BootstrapWidget, forms.DateTimeInput):
 
 class Select (BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
+    css_classes = ['custom-select']
 
 
 class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
     """ Bootstrap version of ``forms.SelectMultiple`` """
+    css_classes = ['custom-select']
 
 
 class RadioSelect (BootstrapWidget, forms.RadioSelect):
@@ -142,6 +144,7 @@ class CheckboxSelectMultiple (BootstrapWidget, forms.CheckboxSelectMultiple):
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
+    css_classes = ['custom-select']
 
     def __init__(self, attrs=None, unknown_label=None):
         super(NullBooleanSelect, self).__init__(attrs=attrs)
