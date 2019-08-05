@@ -1,10 +1,13 @@
-from django import template
-from django import forms
-from django.template import loader
+from django import forms, template
+from django.conf import settings
 from django.core.paginator import Paginator
+from django.template import loader
 from django.utils import dateformat
 from django.utils.encoding import force_text
-from django.conf import settings
+from django.utils import formats
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 import datetime
 import os
 
@@ -26,8 +29,9 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'zip': 'fa-file-archive-o',
 }
 
+
 @register.simple_tag
-def bootstrap_form(form, template=None):
+def bootstrap_form(form, template=None, **kwargs):
     """
     Renders a Django form using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -41,19 +45,19 @@ def bootstrap_form(form, template=None):
 
     :param form: A Django form instance
     """
-
     templates = [
         'bootstrap/%s.html' % form.__class__.__name__.lower(),
         'bootstrap/form.html',
     ]
     if template:
         templates.insert(0, template)
-    return loader.render_to_string(templates, {
-        'form': form,
-    })
+    params = {'form': form}
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
+
 
 @register.simple_tag
-def bootstrap_field(field, classes='', template=None):
+def bootstrap_field(field, classes='', template=None, **kwargs):
     """
     Renders a bound Django field using Bootstrap markup. See http://getbootstrap.com/css/#forms
     for more information.
@@ -76,9 +80,12 @@ def bootstrap_field(field, classes='', template=None):
     """
     if not field:
         return ''
+    field_class = field.field.__class__.__name__.lower()
+    widget_class = field.field.widget.__class__.__name__.lower()
     templates = [
-        'bootstrap/%s_%s.html' % (field.field.__class__.__name__.lower(), field.field.widget.__class__.__name__.lower()),
-        'bootstrap/%s.html' % field.field.__class__.__name__.lower(),
+        'bootstrap/%s_%s.html' % (field.form.__class__.__name__.lower(), field.name),
+        'bootstrap/%s_%s.html' % (field_class, widget_class),
+        'bootstrap/%s.html' % field_class,
         'bootstrap/field.html',
     ]
     if template:
@@ -86,13 +93,60 @@ def bootstrap_field(field, classes='', template=None):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-    return loader.render_to_string(templates, {
+    # Need to shoehorn some ARIA attributes onto the widget based on information on the field
+    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
+    labelledby.add('%s-label' % field.auto_id)
+    field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
+    describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
+    if field.help_text:
+        describedby.add('%s-help' % field.auto_id)
+    if field.errors:
+        describedby.add('%s-errors' % field.auto_id)
+    if describedby:
+        field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
+    params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
         'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
+        'field_class': field_class,
+        'widget_class': widget_class,
         'extra_classes': classes.strip(),
-    })
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
+
+
+@register.simple_tag
+def render_readonly(field, template=None, **kwargs):
+    if not field or field.is_hidden:
+        return ''
+    field_class = field.field.__class__.__name__.lower()
+    widget_class = field.field.widget.__class__.__name__.lower()
+    templates = [
+        'bootstrap/%s_%s_readonly.html' % (field.form.__class__.__name__.lower(), field.name),
+        'bootstrap/%s_%s_readonly.html' % (field_class, widget_class),
+        'bootstrap/%s_readonly.html' % field_class,
+        'bootstrap/field_readonly.html',
+    ]
+    if template:
+        templates.insert(0, template)
+    value = field.field.to_python(field.value())
+    if hasattr(field.field.widget, 'render_readonly'):
+        rendered = field.field.widget.render_readonly(value)
+    else:
+        short_dates = kwargs.pop('short_dates', True)
+        rendered = stringify(value, short_dates=short_dates)
+    params = {
+        'field': field,
+        'value': value,
+        'rendered_value': rendered,
+        'field_class': field_class,
+        'widget_class': widget_class,
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
+
 
 @register.simple_tag
 def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, template=None):
@@ -129,8 +183,9 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
         'querystring': querystring,
     })
 
+
 @register.simple_tag
-def render_value(obj, field_name, template=None, classes='', label=None, default=''):
+def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
     Renders a static value as a ``p.form-control-static`` element wrapped in a ``div.form-group``,
     as suggested by http://getbootstrap.com/css/#forms-controls-static
@@ -162,21 +217,24 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         value = getattr(obj, field_name, None)
         if hasattr(value, 'all'):
             value = list(value.all())
-    return loader.render_to_string(templates, {
+    params = {
         'object': obj,
         'field': field_name,
         'label': label,
         'value': value,
         'extra_classes': classes,
         'default_value': default,
-    })
+    }
+    params.update(kwargs)
+    return loader.render_to_string(templates, params)
+
 
 @register.simple_tag
-def stringify(value, sep=', ', default='', linebreaks=True):
+def stringify(value, sep=', ', default='', linebreaks=True, escape_html=True, short_dates=False):
     if value is None:
         value = default
     elif isinstance(value, bool):
-        value = 'Yes' if value else 'No'
+        value = _('Yes') if value else _('No')
     elif isinstance(value, (list, tuple)):
         value = sep.join(stringify(v) for v in value)
     elif isinstance(value, dict):
@@ -186,18 +244,22 @@ def stringify(value, sep=', ', default='', linebreaks=True):
                 parts.append('%s: %s' % (key, stringify(value)))
         value = sep.join(parts)
     elif isinstance(value, datetime.datetime):
-        value = dateformat.format(value, settings.DATETIME_FORMAT)
+        value = formats.date_format(value, 'SHORT_DATETIME_FORMAT' if short_dates else 'DATETIME_FORMAT')
     elif isinstance(value, datetime.date):
-        value = dateformat.format(value, settings.DATE_FORMAT)
+        value = formats.date_format(value, 'SHORT_DATE_FORMAT' if short_dates else 'DATE_FORMAT')
     # The default value should be used if the string representation is empty, not just the value itself.
     value = force_text(value) or default
+    if escape_html:
+        value = escape(value)
     if linebreaks:
         value = value.replace('\r\n', '\n').replace('\n', '<br />')
-    return value
+    return mark_safe(value)
+
 
 @register.filter
 def file_extension_icon(ext, default='fa-file-o'):
     return FONT_AWESOME_FILE_TYPE_ICON_MAP.get(ext.lstrip('.').lower(), default)
+
 
 @register.filter
 def filename_icon(filename, default='fa-file-o'):

@@ -15,6 +15,6 @@
 
 {% block fields %}
     {% for field in form.visible_fields %}
-        {% bootstrap_field field %}
+        {% bootstrap_field field form=form %}
     {% endfor %}
 {% endblock fields %}
