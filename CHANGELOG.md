@@ -52,3 +52,17 @@
 ## 1.3.11
 
 * Added a `django/forms/widgets/attrs.html` override to add `form-control` to Django widgets automatically
+
+## 2.0.0
+
+* Updated local copy of Bootstrap to v4.3.1
+* Updated Datepicker for Bootstrap to v1.9.0 for Bootstrap 4 support
+* Updated `bootstrap/field.html` to respect new Bootstrap 4 structure for checkboxes and radios
+* Moved closing tag of `.controls.clearfix` div in `field.html` to include the errorlist so `.invalid-feedback` reacts and displays properly
+* Added `widgets.CheckboxInput` which includes the proper Bootstrap 4 class
+* Added `.invalid-feedback` Bootstrap 4 class to field errorlists
+* Changed help-text span tags to small tags, to reflect Bootstrap 4 styles
+* Updated references to Bootstrap's documentation
+* Added `.page-item` and `.page-link` classes in `pager.html` where appropriate
+* Restructured the `non_field_errors` alerts in `form.html` to be more Bootstrap 4 like, with a fade transition and using &times; instead of an icon font
+* Gave select widgets the `custom-select` class so they style cleanly when invalid

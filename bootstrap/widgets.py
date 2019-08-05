@@ -117,26 +117,34 @@ class DateTimeInput (BootstrapWidget, forms.DateTimeInput):
 
 class Select (BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
+    css_classes = ['custom-select']
 
 
 class SelectMultiple (BootstrapWidget, forms.SelectMultiple):
     """ Bootstrap version of ``forms.SelectMultiple`` """
+    css_classes = ['custom-select']
 
 
 class RadioSelect (BootstrapWidget, forms.RadioSelect):
     """ Bootstrap version of ``forms.RadioSelect`` """
-    css_classes = []
+    css_classes = ['form-check-input']
     use_fieldset = True
+
+
+class CheckboxInput (BootstrapWidget, forms.CheckboxInput):
+    """ Bootstrap version of ``forms.CheckboxInput`` """
+    css_classes = ['form-check-input']
 
 
 class CheckboxSelectMultiple (BootstrapWidget, forms.CheckboxSelectMultiple):
     """ Bootstrap version of ``forms.CheckboxSelectMultiple`` """
-    css_classes = []
+    css_classes = ['form-check-input']
     use_fieldset = True
 
 
 class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
+    css_classes = ['custom-select']
 
     def __init__(self, attrs=None, unknown_label=None):
         super(NullBooleanSelect, self).__init__(attrs=attrs)
@@ -205,6 +213,7 @@ class ModelWidgets (collections.Mapping):
        forms.Select: Select,
        forms.SelectMultiple: SelectMultiple,
        forms.RadioSelect: RadioSelect,
+       forms.CheckboxInput: CheckboxInput,
        forms.CheckboxSelectMultiple: CheckboxSelectMultiple,
        forms.NullBooleanSelect: NullBooleanSelect,
        forms.EmailInput: EmailInput,

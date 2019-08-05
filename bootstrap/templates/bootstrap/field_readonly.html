@@ -1,15 +1,15 @@
 {% load bootstrap %}
 
-<div id="{{ field.auto_id }}-group" class="form-group readonly field-{{ field_class }} widget-{{ widget_class }}{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %}">
+<div id="{{ field.auto_id }}-group" class="form-group readonly field-{{ field_class }} widget-{{ widget_class }}{% if field.field.required %} required{% endif %}">
     <label>{{ field.label }}</label>
-    <div class="form-control-static clearfix">
+    <div class="form-control-plaintext clearfix">
         {{ rendered_value }}
     </div>
     {% if field.help_text %}
-        <span id="{{ field.auto_id }}-help" class="help-block">{{ field.help_text|safe }}</span>
+        <small id="{{ field.auto_id }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
     {% endif %}
     {% if field.errors %}
-        <ul id="{{ field.auto_id }}-errors" class="errorlist">
+        <ul id="{{ field.auto_id }}-errors" class="errorlist invalid-feedback d-block">
             {% for error in field.errors %}
                 <li>{{ error|escape }}</li>
             {% endfor %}
