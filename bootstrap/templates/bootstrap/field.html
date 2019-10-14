@@ -7,25 +7,27 @@
         {% endif %}
         <div class="controls clearfix">
             {% if use_fieldset %}
-                {% for choice in field %}
-                    <div class="form-check">
-                        {{ choice.tag }}
-                        <label class="form-check-label" id="{{ choice.id_for_label }}-label" for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-
-                        {% if forloop.last %}
-                            {% if field.help_text %}
-                                <small id="{{ field.auto_id }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                <div id='{{ field.auto_id }}'>
+                    {% for choice in field %}
+                        <div class="form-check">
+                            {{ choice.tag }}
+                            <label class="form-check-label" id="{{ choice.id_for_label }}-label" for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+    
+                            {% if forloop.last %}
+                                {% if field.help_text %}
+                                    <small id="{{ field.auto_id }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <ul id="{{ field.auto_id }}-errors" class="errorlist invalid-feedback">
+                                        {% for error in field.errors %}
+                                            <li>{{ error|escape }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             {% endif %}
-                            {% if field.errors %}
-                                <ul id="{{ field.auto_id }}-errors" class="errorlist invalid-feedback">
-                                    {% for error in field.errors %}
-                                        <li>{{ error|escape }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
                 {% if is_checkbox %}
                     {{ field }}
