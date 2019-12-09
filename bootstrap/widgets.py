@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.utils import flatatt
 from django.template import loader
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext_lazy as _
 
 import collections
 
@@ -149,9 +149,9 @@ class NullBooleanSelect (BootstrapWidget, forms.NullBooleanSelect):
     def __init__(self, attrs=None, unknown_label=None):
         super(NullBooleanSelect, self).__init__(attrs=attrs)
         self.choices = (
-            ('1', ugettext_lazy(unknown_label or 'Unknown')),
-            ('2', ugettext_lazy('Yes')),
-            ('3', ugettext_lazy('No'))
+            ('unknown', unknown_label or _('Unknown')),
+            ('true', _('Yes')),
+            ('false', _('No'))
         )
 
 
@@ -161,21 +161,23 @@ class NullBooleanRadioSelect (RadioSelect):
     def __init__(self, attrs=None, unknown_label=None):
         super(NullBooleanRadioSelect, self).__init__(attrs=attrs)
         self.choices = (
-            ('1', ugettext_lazy(unknown_label or 'Unknown')),
-            ('2', ugettext_lazy('Yes')),
-            ('3', ugettext_lazy('No'))
+            ('unknown', unknown_label or _('Unknown')),
+            ('true', _('Yes')),
+            ('false', _('No'))
         )
 
     def render(self, name, value, attrs=None, renderer=None):
         try:
             value = {
-                True: '2',
-                False: '3',
-                '2': '2',
-                '3': '3'
+                True: 'true',
+                False: 'false',
+                'true': 'true',
+                'false': 'false',
+                '2': 'true',
+                '3': 'false',
             }[value]
         except KeyError:
-            value = '1'
+            value = 'unknown'
         return super(NullBooleanRadioSelect, self).render(name, value, attrs, renderer=renderer)
 
     def value_from_datadict(self, data, files, name):
@@ -184,9 +186,11 @@ class NullBooleanRadioSelect (RadioSelect):
             '2': True,
             True: True,
             'True': True,
+            'true': True,
             '3': False,
             'False': False,
-            False: False
+            False: False,
+            'false': False,
         }.get(value)
 
 
