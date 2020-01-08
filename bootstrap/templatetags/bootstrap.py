@@ -93,23 +93,33 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-    # Need to shoehorn some ARIA attributes onto the widget based on information on the field
-    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
-    labelledby.add('%s-label' % field.auto_id)
-    field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
+
+    use_fieldset = getattr(field.field.widget, 'use_fieldset', False)
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
+    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
+
+    # Need to shoehorn some ARIA attributes onto the widget based on information
+    # on the field
+    if use_fieldset:
+        describedby.add('%s-label' % field.auto_id)
+    else:
+        labelledby.add('%s-label' % field.auto_id)
+        field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
+
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
     if field.errors:
         field.field.widget.attrs['class'] = field.field.widget.attrs.get('class', '') + ' is-invalid'
         describedby.add('%s-errors' % field.auto_id)
+    
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
+    
     params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
-        'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
+        'use_fieldset': use_fieldset,
         'field_class': field_class,
         'widget_class': widget_class,
         'extra_classes': classes.strip(),
