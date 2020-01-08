@@ -93,35 +93,28 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-    # Need to shoehorn some ARIA attributes onto the widget based on information on the field
-    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
-    labelledby.add('%s-label' % field.auto_id)
-    field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
 
-    # If this field has subwidgets, then each of those individual subwidgets
-    # will have their own unique <label> elements. The labelledby attribute on
-    # those subwidgets inherits from the parent widget's label by default. So,
-    # we set the labelledby attribute to its proper option specific value, and
-    # set the aria-describedby attribute to the parent widget's label.
     use_fieldset = getattr(field.field.widget, 'use_fieldset', False)
-    if use_fieldset:
-        for bound_widget in field.subwidgets:
-            attrs = bound_widget.data.setdefault('attrs', {})
-
-            subwidget_describedby = set(attrs.get('aria-describedby', '').split())
-            subwidget_describedby.add('%s-label' % field.auto_id)
-
-            attrs['aria-describedby'] = ' '.join(subwidget_describedby)
-            attrs['aria-labelledby'] = '{}-label'.format(bound_widget.id_for_label)
-    
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
+    labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
+
+    # Need to shoehorn some ARIA attributes onto the widget based on information
+    # on the field
+    if use_fieldset:
+        describedby.add('%s-label' % field.auto_id)
+    else:
+        labelledby.add('%s-label' % field.auto_id)
+        field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
+
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
     if field.errors:
         field.field.widget.attrs['class'] = field.field.widget.attrs.get('class', '') + ' is-invalid'
         describedby.add('%s-errors' % field.auto_id)
+    
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
+    
     params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
