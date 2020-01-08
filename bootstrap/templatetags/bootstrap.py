@@ -97,23 +97,6 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
     labelledby.add('%s-label' % field.auto_id)
     field.field.widget.attrs['aria-labelledby'] = ' '.join(labelledby)
-
-    # If this field has subwidgets, then each of those individual subwidgets
-    # will have their own unique <label> elements. The labelledby attribute on
-    # those subwidgets inherits from the parent widget's label by default. So,
-    # we set the labelledby attribute to its proper option specific value, and
-    # set the aria-describedby attribute to the parent widget's label.
-    use_fieldset = getattr(field.field.widget, 'use_fieldset', False)
-    if use_fieldset:
-        for bound_widget in field.subwidgets:
-            attrs = bound_widget.data.setdefault('attrs', {})
-
-            subwidget_describedby = set(attrs.get('aria-describedby', '').split())
-            subwidget_describedby.add('%s-label' % field.auto_id)
-
-            attrs['aria-describedby'] = ' '.join(subwidget_describedby)
-            attrs['aria-labelledby'] = '{}-label'.format(bound_widget.id_for_label)
-    
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
     if field.help_text:
         describedby.add('%s-help' % field.auto_id)
@@ -126,7 +109,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
         'show_label': getattr(field.field.widget, 'show_label', True),
-        'use_fieldset': use_fieldset,
+        'use_fieldset': getattr(field.field.widget, 'use_fieldset', False),
         'field_class': field_class,
         'widget_class': widget_class,
         'extra_classes': classes.strip(),
