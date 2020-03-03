@@ -66,3 +66,7 @@
 * Added `.page-item` and `.page-link` classes in `pager.html` where appropriate
 * Restructured the `non_field_errors` alerts in `form.html` to be more Bootstrap 4 like, with a fade transition and using &times; instead of an icon font
 * Gave select widgets the `custom-select` class so they style cleanly when invalid
+
+## 2.1.2
+
+* Updated local copy of Bootstrap to v4.4.1 while maintaining 508 compliant colors
