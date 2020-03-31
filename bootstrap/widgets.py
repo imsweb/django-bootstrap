@@ -191,6 +191,9 @@ class EmailInput (TextInput):
 class NumberInput (TextInput):
     input_type = 'number'
 
+class URLInput (TextInput):
+    input_type = 'url'
+
 class FileInput (BootstrapWidget, forms.FileInput):
     """ Bootstrap version of ``forms.FileInput`` """
     css_classes = []
@@ -211,6 +214,7 @@ class ModelWidgets (collections.Mapping):
        forms.NullBooleanSelect: NullBooleanSelect,
        forms.EmailInput: EmailInput,
        forms.NumberInput: NumberInput,
+       forms.URLInput: URLInput,
     }
 
     def __init__(self, model_class, overrides=None):
