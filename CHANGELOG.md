@@ -70,3 +70,7 @@
 ## 2.2.0
 
 * Updated local copy of Bootstrap to v4.4.1 while maintaining 508 compliant colors
+
+## 4.0.0
+
+* Updated local copy of Bootstrap v4.4.1 with contrast adjustments for default colors, navbars, breadcrumbs, and alerts
