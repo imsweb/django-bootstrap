@@ -74,9 +74,9 @@ class BootstrapWidget (object):
         return attrs
 
 
-MainBootstrapWidget = apps.get_app_config('bootstrap').get_bootstrap_widget()
+_BootstrapWidget = apps.get_app_config('bootstrap').get_bootstrap_widget()
 
-class TextInput (MainBootstrapWidget, forms.TextInput):
+class TextInput (_BootstrapWidget, forms.TextInput):
     """ Bootstrap version of ``forms.TextInput`` """
 
 
@@ -85,7 +85,7 @@ class AutofocusTextInput (TextInput):
     extra_attrs = {'autofocus': 'autofocus'}
 
 
-class PasswordInput (MainBootstrapWidget, forms.PasswordInput):
+class PasswordInput (_BootstrapWidget, forms.PasswordInput):
     """ Bootstrap version of ``forms.PasswordInput`` """
 
 
@@ -94,7 +94,7 @@ class AutofocusPasswordInput (PasswordInput):
     extra_attrs = {'autofocus': 'autofocus'}
 
 
-class Textarea (MainBootstrapWidget, forms.Textarea):
+class Textarea (_BootstrapWidget, forms.Textarea):
     """ Bootstrap version of ``forms.Textarea`` """
 
 
@@ -103,49 +103,49 @@ class AutofocusTextarea (Textarea):
     extra_attrs = {'autofocus': 'autofocus'}
 
 
-class DateInput (MainBootstrapWidget, forms.DateInput):
+class DateInput (_BootstrapWidget, forms.DateInput):
     """ Bootstrap version of ``forms.DateInput``. The input is rendered with an extra "date" class. """
-    css_classes = MainBootstrapWidget.css_classes + ('date',)
+    css_classes = _BootstrapWidget.css_classes + ('date',)
 
 
-class TimeInput (MainBootstrapWidget, forms.TimeInput):
+class TimeInput (_BootstrapWidget, forms.TimeInput):
     """ Bootstrap version of ``forms.TimeInput``. The input is rendered with an extra "time" class. """
-    css_classes = MainBootstrapWidget.css_classes + ('time',)
+    css_classes = _BootstrapWidget.css_classes + ('time',)
 
 
-class DateTimeInput (MainBootstrapWidget, forms.DateTimeInput):
+class DateTimeInput (_BootstrapWidget, forms.DateTimeInput):
     """ Bootstrap version of ``forms.TimeInput``. The input is rendered with an extra "time" class. """
-    css_classes = MainBootstrapWidget.css_classes + ('datetime',)
+    css_classes = _BootstrapWidget.css_classes + ('datetime',)
 
 
-class Select (MainBootstrapWidget, forms.Select):
+class Select (_BootstrapWidget, forms.Select):
     """ Bootstrap version of ``forms.Select`` """
     css_classes = ('custom-select',)
 
 
-class SelectMultiple (MainBootstrapWidget, forms.SelectMultiple):
+class SelectMultiple (_BootstrapWidget, forms.SelectMultiple):
     """ Bootstrap version of ``forms.SelectMultiple`` """
     css_classes = ('custom-select',)
 
 
-class RadioSelect (MainBootstrapWidget, forms.RadioSelect):
+class RadioSelect (_BootstrapWidget, forms.RadioSelect):
     """ Bootstrap version of ``forms.RadioSelect`` """
     css_classes = ('form-check-input',)
     use_fieldset = True
 
 
-class CheckboxInput (MainBootstrapWidget, forms.CheckboxInput):
+class CheckboxInput (_BootstrapWidget, forms.CheckboxInput):
     """ Bootstrap version of ``forms.CheckboxInput`` """
     css_classes = ('form-check-input',)
 
 
-class CheckboxSelectMultiple (MainBootstrapWidget, forms.CheckboxSelectMultiple):
+class CheckboxSelectMultiple (_BootstrapWidget, forms.CheckboxSelectMultiple):
     """ Bootstrap version of ``forms.CheckboxSelectMultiple`` """
     css_classes = ('form-check-input',)
     use_fieldset = True
 
 
-class NullBooleanSelect (MainBootstrapWidget, forms.NullBooleanSelect):
+class NullBooleanSelect (_BootstrapWidget, forms.NullBooleanSelect):
     """ Bootstrap version of ``forms.NullBooleanSelect`` """
     css_classes = ('custom-select',)
 
@@ -207,7 +207,7 @@ class NumberInput (TextInput):
 class URLInput (TextInput):
     input_type = 'url'
 
-class FileInput (MainBootstrapWidget, forms.FileInput):
+class FileInput (_BootstrapWidget, forms.FileInput):
     """ Bootstrap version of ``forms.FileInput`` """
     css_classes = ()
 
