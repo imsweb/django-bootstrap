@@ -220,7 +220,9 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         templates.insert(0, template)
     try:
         # XXX: A little hacky having this here - it's defined in bioshare's PropertiesModel.
-        label, value = obj.get_field(field_name)
+        _label, value = obj.get_field(field_name)
+        if label is None:
+            label = _label
     except:
         if label is None:
             label = field_name[0].upper() + field_name[1:].replace('_', ' ')
