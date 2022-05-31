@@ -63,7 +63,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     for more information.
 
     By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
-    divs with ``form-check`` and ``required`` classes as appropriate, any field errors
+    ``mb-3`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
     using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 5's
     ``invalid-feedback`` class, and includes a ``form-text text-muted`` element for help text.
 
