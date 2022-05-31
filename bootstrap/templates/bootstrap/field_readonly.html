@@ -1,6 +1,6 @@
 {% load bootstrap %}
 
-<div id="{{ field.auto_id }}-group" class="form-group readonly field-{{ field_class }} widget-{{ widget_class }}{% if field.field.required %} required{% endif %}">
+<div id="{{ field.auto_id }}-group" class="readonly field-{{ field_class }} widget-{{ widget_class }}{% if field.field.required %} required{% endif %}">
     <label>{{ field.label }}</label>
     <div class="form-control-plaintext clearfix">
         {{ rendered_value }}

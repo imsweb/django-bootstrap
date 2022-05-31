@@ -1,11 +1,11 @@
 <ul class="pagination">
     {% if page.has_previous %}
-        <li class="page-item"><a href="?{{ querystring }}{% if querystring %}&amp;{% endif %}{{ param }}={{ page.previous_page_number }}" class="page-link" title="Previous Page"><span class="fa fa-chevron-left" aria-hidden="true"></span><span class="sr-only">Previous Page</span></a></li>
+        <li class="page-item"><a href="?{{ querystring }}{% if querystring %}&amp;{% endif %}{{ param }}={{ page.previous_page_number }}" class="page-link" title="Previous Page"><span class="fa fa-chevron-left" aria-hidden="true"></span><span class="visually-hidden">Previous Page</span></a></li>
     {% endif %}
     {% for p in page_range %}
         <li class="page-item{% if p == page.number %} active{% endif %}"><a href="?{{ querystring }}{% if querystring %}&amp;{% endif %}{{ param }}={{ p }}" class="page-link">{{ p }}</a></li>
     {% endfor %}
     {% if page.has_next %}
-        <li class="page-item"><a href="?{{ querystring }}{% if querystring %}&amp;{% endif %}{{ param }}={{ page.next_page_number }}" class="page-link" title="Next Page"><span class="fa fa-chevron-right" aria-hidden="true"></span><span class="sr-only">Next Page</span></a></li>
+        <li class="page-item"><a href="?{{ querystring }}{% if querystring %}&amp;{% endif %}{{ param }}={{ page.next_page_number }}" class="page-link" title="Next Page"><span class="fa fa-chevron-right" aria-hidden="true"></span><span class="visually-hidden">Next Page</span></a></li>
     {% endif %}
 </ul>
