@@ -1,7 +1,7 @@
 {% if field.is_hidden %}
     {{ field }}
 {% else %}
-    <div id="{{ field.auto_id }}-group" class="field-{{ field_class }} widget-{{ widget_class }}{% if is_checkbox %} form-check{% endif %}{% if field.field.required %} required{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}">
+    <div id="{{ field.auto_id }}-group" class="mb-3 field-{{ field_class }} widget-{{ widget_class }}{% if is_checkbox %} form-check{% endif %}{% if field.field.required %} required{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}">
         {% if show_label and not is_checkbox %}
         <label for="{{ field.auto_id }}" id="{{ field.auto_id }}-label">{{ field.label }}</label>
         {% endif %}

@@ -76,7 +76,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     ``bootstrap/charfield_textarea.html``, then ``bootstrap/charfield.html``.
 
     :param field: A BoundField instance, such as those returned by iterating over a form
-    :param classes: Optional string of CSS classes to append to the ``<div ...>``
+    :param classes: Optional string of CSS classes to append to the ``<div class="mb-3...">``
     """
     if not field:
         return ''
@@ -198,7 +198,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 @register.simple_tag
 def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
-    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div``.
+    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.mb-3``.
 
     The template used to render the value depends on the ContentType of the object. The following
     templates are searched in order:
