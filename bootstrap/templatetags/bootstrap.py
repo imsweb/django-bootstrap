@@ -33,7 +33,7 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
     """
-    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/5.0/forms/overview/
+    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/5.1/forms/overview/
     for more information.
 
     By default, the form rendering is controlled by the ``bootstrap/form.html``
@@ -164,7 +164,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
     """
     Renders a pager using Bootstrap's pagination markup, documented here:
 
-        https://getbootstrap.com/docs/5.0/components/pagination/
+        https://getbootstrap.com/docs/5.1/components/pagination/
 
     The pager's template is ``bootstrap/pager.html`` by default, unless ``template`` is specified.
 
