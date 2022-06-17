@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.utils import flatatt
 from django.template import loader
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 try:
     from collections.abc import Mapping
