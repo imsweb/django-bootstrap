@@ -33,7 +33,7 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
     """
-    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/4.3/components/forms/
+    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/5.1/forms/overview/
     for more information.
 
     By default, the form rendering is controlled by the ``bootstrap/form.html``
@@ -63,8 +63,8 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     for more information.
 
     By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
-    ``form-group`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
-    using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 4's
+    ``mb-3`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
+    using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 5's
     ``invalid-feedback`` class, and includes a ``form-text text-muted`` element for help text.
 
     A special check is made for ``CheckboxInput`` widgets, so that the label appears after the
@@ -76,7 +76,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     ``bootstrap/charfield_textarea.html``, then ``bootstrap/charfield.html``.
 
     :param field: A BoundField instance, such as those returned by iterating over a form
-    :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
+    :param classes: Optional string of CSS classes to append to the ``<div class="mb-3...">``
     """
     if not field:
         return ''
@@ -164,7 +164,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
     """
     Renders a pager using Bootstrap's pagination markup, documented here:
 
-        https://getbootstrap.com/docs/4.3/components/pagination/
+        https://getbootstrap.com/docs/5.1/components/pagination/
 
     The pager's template is ``bootstrap/pager.html`` by default, unless ``template`` is specified.
 
@@ -198,7 +198,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 @register.simple_tag
 def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
-    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.form-group``.
+    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.mb-3``.
 
     The template used to render the value depends on the ContentType of the object. The following
     templates are searched in order:
