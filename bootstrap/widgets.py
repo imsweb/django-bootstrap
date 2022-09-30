@@ -1,10 +1,13 @@
 from django import forms
 from django.forms.utils import flatatt
 from django.template import loader
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.apps import apps
 
-import collections
+try:
+    from collections.abc import Mapping
+except ImportError:
+    from collections import Mapping
 
 
 class TemplateWidget (forms.Widget):
@@ -211,7 +214,7 @@ class FileInput (_BootstrapWidget, forms.FileInput):
     """ Bootstrap version of ``forms.FileInput`` """
     css_classes = ()
 
-class ModelWidgets (collections.Mapping):
+class ModelWidgets (Mapping):
 
     widget_map = {
        forms.TextInput: TextInput,
@@ -246,7 +249,7 @@ class ModelWidgets (collections.Mapping):
 
     def __iter__(self):
         seen = set()
-        for key in overrides:
+        for key in self.overrides:
             seen.add(key)
             yield key
         for field in self.model_class._meta.fields:
