@@ -3,11 +3,11 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.template import loader
 from django.utils import dateformat
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils import formats
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import datetime
 import os
 
@@ -111,10 +111,10 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     if field.errors:
         field.field.widget.attrs['class'] = field.field.widget.attrs.get('class', '') + ' is-invalid'
         describedby.add('%s-errors' % field.auto_id)
-    
+
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
-    
+
     params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
@@ -260,7 +260,7 @@ def stringify(value, sep=', ', default='', linebreaks=True, escape_html=True, sh
     elif isinstance(value, datetime.date):
         value = formats.date_format(value, 'SHORT_DATE_FORMAT' if short_dates else 'DATE_FORMAT')
     # The default value should be used if the string representation is empty, not just the value itself.
-    value = force_text(value) or default
+    value = force_str(value) or default
     if escape_html:
         value = escape(value)
     if linebreaks:
