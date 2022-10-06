@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 from django.apps import apps
 
 try:
-     from collections.abc import Mapping
+    from collections.abc import Mapping
 except ImportError:
-     from collections import Mapping
+    from collections import Mapping
 
 
 class TemplateWidget (forms.Widget):
