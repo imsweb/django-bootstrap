@@ -6,7 +6,7 @@ from django.apps import apps
 
 try:
      from collections.abc import Mapping
- except ImportError:
+except ImportError:
      from collections import Mapping
 
 
