@@ -74,3 +74,13 @@
 ## 4.0.0
 
 * Updated local copy of Bootstrap v4.4.1 with contrast adjustments for default colors, navbars, breadcrumbs, and alerts
+
+## 5.0.0
+
+* Upgraded to Bootstrap 5.2.3. These changes are breaking insofar as there have been naming changes to HTML classes, attributes, etc. within files of this package
+in order to make this package Bootstrap 5-compatible (see https://getbootstrap.com/docs/5.3/migration/), but django-bootstrap constructs themselves have not had naming changes
+(e.g., `bootstrap.widgets.Select` still has the same name).
+
+## 5.0.1
+
+* Removed `bootstrap/static/selectize/js/es5-shim.js` and `bootstrap/static/selectize/js/es5-shim.min.js`; they were causing `collectstatic` to fail.
