@@ -29,6 +29,19 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'zip': 'fa-file-archive-o',
 }
 
+@register.inclusion_tag('bootstrap/icon.html')
+def bootstrap_icon(icon: str, **kwargs):
+    location= f'bootstrap/bootstrap-icons/bootstrap-icons.svg#{icon}'
+     
+    return {'location': location,
+            'attributes': { 
+                'class': 'bi',
+                'height': '1em',
+                'width': '1em',
+                'fill': "currentColor",
+                **kwargs 
+                }
+            } 
 
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
