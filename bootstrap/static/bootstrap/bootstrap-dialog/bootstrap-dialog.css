@@ -13,7 +13,7 @@
 .bootstrap-dialog .bootstrap-dialog-title {
   color: #fff;
   display: inline-block;
-  font-size: 16px;
+  font-size: 16px; 
 }
 .bootstrap-dialog .bootstrap-dialog-message {
   font-size: 14px;
