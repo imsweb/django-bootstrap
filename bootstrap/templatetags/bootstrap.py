@@ -146,6 +146,8 @@ def render_readonly(field, template=None, **kwargs):
     if hasattr(field.field.widget, 'render_readonly'):
         rendered = field.field.widget.render_readonly(value)
     else:
+        if getattr(field.field, "localize", False) and kwargs.pop("localize", True):
+            value = formats.localize(value)
         short_dates = kwargs.pop('short_dates', True)
         rendered = stringify(value, short_dates=short_dates)
     params = {
