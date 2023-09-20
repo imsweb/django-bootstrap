@@ -1,0 +1,2 @@
+# Used to get the testapp running locally
+Django~=4.1
