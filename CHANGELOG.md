@@ -85,7 +85,7 @@ in order to make this package Bootstrap 5-compatible (see https://getbootstrap.c
 
 * Removed `bootstrap/static/selectize/js/es5-shim.js` and `bootstrap/static/selectize/js/es5-shim.min.js`; they were causing `collectstatic` to fail.
 
-##5.0.3
+## 5.0.3
 
 * Added [bootstrap icons](https://icons.getbootstrap.com/).
 * Added [bootstap dialogs](https://github.com/nakupanda/bootstrap3-dialog).
