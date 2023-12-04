@@ -87,5 +87,5 @@ in order to make this package Bootstrap 5-compatible (see https://getbootstrap.c
 
 ## 5.0.3
 
-* Added [bootstrap icons](https://icons.getbootstrap.com/).
+* Added [bootstrap icons](https://icons.getbootstrap.com/) which can be added with the bootstrap_icon template-tag.
 * Added [bootstap dialogs](https://github.com/nakupanda/bootstrap3-dialog).
