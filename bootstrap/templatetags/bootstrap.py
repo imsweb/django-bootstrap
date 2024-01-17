@@ -29,6 +29,29 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'zip': 'fa-file-archive-o',
 }
 
+@register.inclusion_tag('bootstrap/icon.html')
+def bootstrap_icon(icon: str, **kwargs):
+    """  
+    Adds a bootstrap icon to the document. See https://icons.getbootstrap.com/ for more information. 
+    Use kwargs to set the attributes of svg tag.  
+    
+    :param icon: The name of the bootstrap icon you want. for example '0-circle'.  
+    :param class: Use to add additional classes to the icon. Defaults to 'bi'.
+    :param height: The height attribute of the icon. Defaults to '1em'.
+    :param width: The width attribute of the icon. Defaults to '1em'. 
+    :param fill: The fill attribute of the icon. Defaults to 'currentColor'.
+    """
+    location= f'bootstrap/bootstrap-icons/bootstrap-icons.svg#{icon}'
+     
+    return {'location': location,
+            'attributes': { 
+                'class': 'bi',
+                'height': '1em',
+                'width': '1em',
+                'fill': 'currentColor',
+                **kwargs 
+                }
+            } 
 
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
