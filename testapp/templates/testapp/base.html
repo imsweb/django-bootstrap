@@ -1,0 +1,43 @@
+{% load static %}<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" />
+        <title>Django Bootstrap</title>
+        {#<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />#}
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'fontawesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+        {% block css %}{% endblock css %}
+    </head>
+    <body class="{% block section %}default{% endblock section %}">
+        <a href="#maincontent" class="visually-hidden-focusable">Skip to Main Content</a>
+        <h1>Django Bootstrap</h1>
+        <div id="main" class="container-fluid">
+            {% block messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">
+                            <span class="sr-only">Close</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endblock messages %}
+
+            {% block main-content %}
+                <div class="row">
+                    <div class="col-lg-11 mx-auto" id="maincontent">
+                        {% block content %}
+                        {% endblock content %}
+                    </div><!-- end id="maincontent" -->
+                </div><!-- end class="row" -->
+            {% endblock main-content %}
+        </div><!-- end id="main" -->
+        
+        <script src="{% static 'jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+        {% block js %}{% endblock js %}
+    </body>
+</html>

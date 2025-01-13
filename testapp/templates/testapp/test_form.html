@@ -1,0 +1,21 @@
+{% extends 'testapp/base.html' %}
+{% load bootstrap %}
+
+{% block content %}
+
+    <h2>Test Form</h2>
+    <p>
+        Test all the django-bootstrap form widgets.<br>
+        Fields on this page are currently: {{ required|yesno:"Required,Not Required" }}<br>
+        Reload Page with Required=<a href="{% url 'test-form' %}">False</a> | <a href="{% url 'test-form' %}?required">True</a><br>
+    </p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input class="btn btn-primary" type="submit" value="Submit" />
+    </form>
+    <br>
+
+{% endblock content %}
+

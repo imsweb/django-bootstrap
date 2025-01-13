@@ -9,7 +9,7 @@ setup(
     author_email='watsond@imsweb.com',
     url='https://github.com/imsweb/django-bootstrap',
     license='BSD',
-    packages=find_packages(),
+    packages=find_packages(exclude=('testapp',)),
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',

@@ -3,11 +3,11 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.template import loader
 from django.utils import dateformat
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils import formats
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import datetime
 import os
 
@@ -29,11 +29,34 @@ FONT_AWESOME_FILE_TYPE_ICON_MAP = {
     'zip': 'fa-file-archive-o',
 }
 
+@register.inclusion_tag('bootstrap/icon.html')
+def bootstrap_icon(icon: str, **kwargs):
+    """  
+    Adds a bootstrap icon to the document. See https://icons.getbootstrap.com/ for more information. 
+    Use kwargs to set the attributes of svg tag.  
+    
+    :param icon: The name of the bootstrap icon you want. for example '0-circle'.  
+    :param class: Use to add additional classes to the icon. Defaults to 'bi'.
+    :param height: The height attribute of the icon. Defaults to '1em'.
+    :param width: The width attribute of the icon. Defaults to '1em'. 
+    :param fill: The fill attribute of the icon. Defaults to 'currentColor'.
+    """
+    location= f'bootstrap/bootstrap-icons/bootstrap-icons.svg#{icon}'
+     
+    return {'location': location,
+            'attributes': { 
+                'class': 'bi',
+                'height': '1em',
+                'width': '1em',
+                'fill': 'currentColor',
+                **kwargs 
+                }
+            } 
 
 @register.simple_tag
 def bootstrap_form(form, template=None, **kwargs):
     """
-    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/4.3/components/forms/
+    Renders a Django form using Bootstrap markup. See https://getbootstrap.com/docs/5.1/forms/overview/
     for more information.
 
     By default, the form rendering is controlled by the ``bootstrap/form.html``
@@ -63,8 +86,8 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     for more information.
 
     By default, the field rendering is specified in the ``bootstrap/field.html`` template, which will render
-    ``form-group`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
-    using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 4's
+    ``mb-3`` divs with ``form-check`` and ``required`` classes as appropriate, any field errors
+    using Django's field error rendering (typically ``ul.errorlist``) along with Bootstrap 5's
     ``invalid-feedback`` class, and includes a ``form-text text-muted`` element for help text.
 
     A special check is made for ``CheckboxInput`` widgets, so that the label appears after the
@@ -76,7 +99,7 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     ``bootstrap/charfield_textarea.html``, then ``bootstrap/charfield.html``.
 
     :param field: A BoundField instance, such as those returned by iterating over a form
-    :param classes: Optional string of CSS classes to append to the ``<div class="form-group...">``
+    :param classes: Optional string of CSS classes to append to the ``<div class="mb-3...">``
     """
     if not field:
         return ''
@@ -111,10 +134,10 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
     if field.errors:
         field.field.widget.attrs['class'] = field.field.widget.attrs.get('class', '') + ' is-invalid'
         describedby.add('%s-errors' % field.auto_id)
-    
+
     if describedby:
         field.field.widget.attrs['aria-describedby'] = ' '.join(describedby)
-    
+
     params = {
         'field': field,
         'is_checkbox': isinstance(field.field.widget, forms.CheckboxInput),
@@ -164,7 +187,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
     """
     Renders a pager using Bootstrap's pagination markup, documented here:
 
-        https://getbootstrap.com/docs/4.3/components/pagination/
+        https://getbootstrap.com/docs/5.1/components/pagination/
 
     The pager's template is ``bootstrap/pager.html`` by default, unless ``template`` is specified.
 
@@ -198,7 +221,7 @@ def pager(total, page_size=10, page=1, param='page', querystring='', spread=7, t
 @register.simple_tag
 def render_value(obj, field_name, template=None, classes='', label=None, default='', **kwargs):
     """
-    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.form-group``.
+    Renders a static value as a ``p.form-control-plaintext`` element wrapped in a ``div.mb-3``.
 
     The template used to render the value depends on the ContentType of the object. The following
     templates are searched in order:
@@ -220,7 +243,9 @@ def render_value(obj, field_name, template=None, classes='', label=None, default
         templates.insert(0, template)
     try:
         # XXX: A little hacky having this here - it's defined in bioshare's PropertiesModel.
-        label, value = obj.get_field(field_name)
+        _label, value = obj.get_field(field_name)
+        if label is None:
+            label = _label
     except:
         if label is None:
             label = field_name[0].upper() + field_name[1:].replace('_', ' ')
@@ -258,7 +283,7 @@ def stringify(value, sep=', ', default='', linebreaks=True, escape_html=True, sh
     elif isinstance(value, datetime.date):
         value = formats.date_format(value, 'SHORT_DATE_FORMAT' if short_dates else 'DATE_FORMAT')
     # The default value should be used if the string representation is empty, not just the value itself.
-    value = force_text(value) or default
+    value = force_str(value) or default
     if escape_html:
         value = escape(value)
     if linebreaks:
