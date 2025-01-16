@@ -7,7 +7,7 @@ name = "ims-bootstrap"
 dynamic = ["version"]
 description = "A collection of Django widgets and templatetags for Bootstrap integration."
 readme = "README.md"
-license = "BSD"
+license = "BSD-2-Clause"
 authors = [
     { name = "Dan Watson", email = "watsond@imsweb.com" },
 ]
