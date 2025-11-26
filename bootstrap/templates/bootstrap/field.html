@@ -7,7 +7,7 @@
             <label class="form-label" for="{{ field.auto_id }}" id="{{ field.auto_id }}-label">{{ field.label }}</label>
             {% endif %}
         {% endblock label %}
-        <div class="{% block controls-classes %}controls clearfix{% endblock controls-classes %}">
+        <div class="{% block controls-class %}controls clearfix{% endblock controls-class %}">
             {% if use_fieldset %}
                 {% block fieldset %}
                     <div id='{{ field.auto_id }}'>
@@ -44,7 +44,7 @@
                     {% endif %}
                 {% endblock non-fieldset %}
                 {% if field.errors %}
-                    <ul id="{{ field.auto_id }}-errors" class="errorlist invalid-feedback">
+                    <ul id="{{ field.auto_id }}-errors" class="{% block error-class %}errorlist invalid-feedback{% endblock error-class %}">
                         {% for error in field.errors %}
                             {% block error %}
                                 <li>{{ error|escape }}</li>
