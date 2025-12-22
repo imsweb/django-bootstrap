@@ -44,7 +44,7 @@
                     {% endif %}
                 {% endblock non-fieldset %}
                 {% if field.errors %}
-                    <ul id="{{ field.auto_id }}-errors" class="errorlist invalid-feedback">
+                    <ul id="{{ field.auto_id }}-errors" class="{% block error-class %}errorlist invalid-feedback{% endblock error-class %}">
                         {% for error in field.errors %}
                             {% block error %}
                                 <li>{{ error|escape }}</li>
