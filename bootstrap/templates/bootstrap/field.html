@@ -7,7 +7,7 @@
             <label class="form-label" for="{{ field.auto_id }}" id="{{ field.auto_id }}-label">{{ field.label }}</label>
             {% endif %}
         {% endblock label %}
-        <div class="{% block controls-class %}controls clearfix{% endblock controls-class %}">
+        <div class="{% block controls-classes %}controls clearfix{% endblock controls-classes %}">
             {% if use_fieldset %}
                 {% block fieldset %}
                     <div id='{{ field.auto_id }}'>
