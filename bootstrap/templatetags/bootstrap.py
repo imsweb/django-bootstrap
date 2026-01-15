@@ -1,4 +1,5 @@
 from django import forms, template
+from django.apps import apps
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.template import loader
@@ -12,6 +13,8 @@ import datetime
 import os
 
 register = template.Library()
+
+bootstrap_app_config = apps.get_app_config("bootstrap")
 
 # https://fortawesome.github.io/Font-Awesome/icons/#file-type
 FONT_AWESOME_FILE_TYPE_ICON_MAP = {
@@ -34,7 +37,7 @@ def bootstrap_icon(icon: str, **kwargs):
     """  
     Adds a bootstrap icon to the document. See https://icons.getbootstrap.com/ for more information. 
     Use kwargs to set the attributes of svg tag.  
-    
+
     :param icon: The name of the bootstrap icon you want. for example '0-circle'.  
     :param class: Use to add additional classes to the icon. Defaults to 'bi'.
     :param height: The height attribute of the icon. Defaults to '1em'.
@@ -42,7 +45,7 @@ def bootstrap_icon(icon: str, **kwargs):
     :param fill: The fill attribute of the icon. Defaults to 'currentColor'.
     """
     location= f'bootstrap/bootstrap-icons/bootstrap-icons.svg#{icon}'
-     
+
     return {'location': location,
             'attributes': { 
                 'class': 'bi',
@@ -105,18 +108,17 @@ def bootstrap_field(field, classes='', template=None, **kwargs):
         return ''
     field_class = field.field.__class__.__name__.lower()
     widget_class = field.field.widget.__class__.__name__.lower()
-    templates = [
-        'bootstrap/%s_%s.html' % (field.form.__class__.__name__.lower(), field.name),
-        'bootstrap/%s_%s.html' % (field_class, widget_class),
-        'bootstrap/%s.html' % field_class,
-        'bootstrap/field.html',
-    ]
+    templates = bootstrap_app_config.get_bootstrap_field_templates(
+        field=field,
+        field_class=field_class,
+        widget_class=widget_class,
+    )
     if template:
         templates.insert(0, template)
     extra_classes = getattr(field.field, 'css_classes', [])
     if extra_classes:
         classes += ' ' + ' '.join(extra_classes)
-
+    classes = bootstrap_app_config.modify_bootstrap_field_classes(classes=classes, field=field)
     use_fieldset = getattr(field.field.widget, 'use_fieldset', False)
     describedby = set(field.field.widget.attrs.get('aria-describedby', '').split())
     labelledby = set(field.field.widget.attrs.get('aria-labelledby', '').split())
